@@ -54,7 +54,7 @@ We have successfully built the complete frontend user interface with functional 
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/fouz0062/creative-ai-generator.git
     cd ziagen
     ```
 2.  **Install dependencies:**

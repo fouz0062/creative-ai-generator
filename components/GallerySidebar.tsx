@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
+import Logo from "@/public/logo.png";
 
 interface ImageMetadata {
   id: string;
@@ -51,13 +52,23 @@ interface GallerySidebarProps {
 }
 
 export default function GallerySidebar({ onSelectImage }: GallerySidebarProps) {
-  const { user } = useAuth(); // To potentially show user-specific history
-
+  const { user } = useAuth();
   return (
     <div className="flex flex-col h-full">
-      <h3 className="text-xl font-semibold text-gray-100 mb-4">
-        History & Gallery
-      </h3>
+      <div className="flex items-center space-x-2 p-4 relative mb-2.5">
+        <Image
+          src={Logo}
+          alt="ZiaGen Logo"
+          width={70}
+          height={70}
+          className="shrink-0 absolute  top-2 left-2"
+        />
+        <span className="text-3xl font-bold [text-shadow:1px_1px_6px_var(--color-indigo-700)] shadow-black/50 text-gray-50 tracking-tight ml-12">
+          ZiaGen
+        </span>
+      </div>
+      <h3 className="text-2xl text-center font-semibold mb-2">Gallery</h3>
+      <p className="w-full h-[0.2] mb-6 bg-indigo-700"></p>
       <div className="grid grid-cols-2 gap-4 overflow-y-auto">
         {mockImages.map((image) => (
           <div
