@@ -29,7 +29,7 @@ We have successfully built the complete frontend user interface with functional 
   - [Tailwind CSS](https://tailwindcss.com/)
   - [React Context API](https://react.dev/learn/passing-data-deeply-with-context) (for state management)
 - **Backend (Upcoming in Phase 2 & 3):**
-  - AWS Lambda (Python)
+  - AWS Lambda (Node Js)
   - Amazon API Gateway
   - Amazon DynamoDB
   - Amazon S3
