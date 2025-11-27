@@ -1,21 +1,27 @@
-// infra/cognito-stack.ts
+// lib/cognito-stack.ts
 import * as cdk from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
+import { HttpApi } from '@aws-cdk/aws-apigatewayv2-alpha';
+
+// Define the properties for your CognitoStack
+export interface CognitoStackProps extends cdk.StackProps {
+  api: HttpApi; // Required: Expects an HttpApi object
+}
 
 export class CognitoStack extends cdk.Stack {
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
 
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  // CHANGED: props is now required (removed '?')
+  constructor(scope: Construct, id: string, props: CognitoStackProps) { 
     super(scope, id, props);
 
     // 1. Define the Cognito User Pool
     this.userPool = new cognito.UserPool(this, 'ZiaGenUserPool', {
       selfSignUpEnabled: true,
-      signInAliases: { email: true }, // Users sign in with their email
+      signInAliases: { email: true },
       userPoolName: 'ZiaGenUserPool',
-      // Enforce strong password policy
       passwordPolicy: {
         minLength: 8,
         requireLowercase: true,
@@ -23,13 +29,13 @@ export class CognitoStack extends cdk.Stack {
         requireDigits: true,
         requireSymbols: false,
       },
-      removalPolicy: cdk.RemovalPolicy.DESTROY, // NOTE: Use RETAIN for production!
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    // 2. Define the Cognito App Client (for the Next.js app to interact with)
+    // 2. Define the Cognito App Client
     this.userPoolClient = this.userPool.addClient('ZiaGenAppClient', {
       authFlows: {
-        userSrp: true, // Recommended flow
+        userSrp: true,
       },
       supportedIdentityProviders: [
         cognito.UserPoolClientIdentityProvider.COGNITO

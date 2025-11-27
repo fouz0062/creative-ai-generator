@@ -1,39 +1,56 @@
 // bin/cdk.ts
-import 'source-map-support/register';
+// Use the EXACT import path suggested by the error (ensuring source-map-support loads correctly)
+import 'E:/aws/creative-ai-generator/node_modules/@cspotcode/source-map-support/register.js'; 
+
 import * as cdk from 'aws-cdk-lib';
-import { CognitoStack } from '../lib/cognito-stack'; // Import from infra
-import { DataStack } from '../lib/data-stack';       // Import from infra
-import { StorageStack } from '../lib/storage-stack';   // Import from lib
+import { DataStack } from '../lib/data-stack';
 import { ApiStack } from '../lib/api-stack';
-require('source-map-support').install();// Import from lib
+import { CognitoStack } from '../lib/cognito-stack';
+import * as dotenv from 'dotenv'; // <-- Keep this import
+
+dotenv.config(); // <-- Keep this line to load variables from .env
 
 const app = new cdk.App();
 
-// Define a common environment for all stacks
-const env = {
-  account: process.env.CDK_DEFAULT_ACCOUNT,
-  region: process.env.CDK_DEFAULT_REGION,
-};
+// Define constants for your stack names
+const DATA_STACK_NAME = 'ZiaGenDataStack';
+const API_STACK_NAME = 'ZiaGenApiStack';
+const COGNITO_STACK_NAME = 'ZiaGenCognitoStack';
 
-// --- Instantiate all your Stacks here ---
+// Retrieve values from environment variables
+const AWS_ACCOUNT_ID = process.env.AWS_ACCOUNT_ID;
+const AWS_REGION = process.env.AWS_REGION || 'eu-central-1'; // Default to eu-central-1 if not set
 
-// Phase 2 Stacks: Data and Cognito
-const dataStack = new DataStack(app, 'ZiaGenDataStack', { env });
-const cognitoStack = new CognitoStack(app, 'ZiaGenCognitoStack', { env });
+// Basic validation (optional but good practice)
+if (!AWS_ACCOUNT_ID) {
+  throw new Error('AWS_ACCOUNT_ID not found in .env file or environment variables.');
+}
 
-// Phase 3 Stacks: Storage and API
-const storageStack = new StorageStack(app, 'ZiaGenStorageStack', { env }); // Re-using `env`
-
-const apiStack = new ApiStack(app, 'ZiaGenApiStack', {
-  // Pass the resources from StorageStack to ApiStack
-  imageBucket: storageStack.imageBucket,
-  imagesTable: storageStack.imagesTable,
-  env: env, // Re-using `env`
+// 1. Data Stack (S3, DynamoDB)
+const dataStack = new DataStack(app, DATA_STACK_NAME, {
+  env: {
+    account: AWS_ACCOUNT_ID,
+    region: AWS_REGION,
+  },
 });
 
-// Explicitly define dependencies to ensure correct deployment order
-apiStack.addDependency(storageStack);
-apiStack.addDependency(dataStack); // If API needs outputs from DataStack later
-apiStack.addDependency(cognitoStack); // If API needs outputs from CognitoStack later
+// 2. API Stack (Lambda, API Gateway)
+const apiStack = new ApiStack(app, API_STACK_NAME, {
+  imagesTable: dataStack.imagesTable,
+  imageBucket: dataStack.imageBucket,
+  env: {
+    account: AWS_ACCOUNT_ID,
+    region: AWS_REGION,
+  },
+});
 
-app.synth(); // Final synthesis
+// 3. Cognito Stack (User Pool)
+const cognitoStack = new CognitoStack(app, COGNITO_STACK_NAME, {
+  api: apiStack.httpApi,
+  env: {
+    account: AWS_ACCOUNT_ID,
+    region: AWS_REGION,
+  },
+});
+
+app.synth();

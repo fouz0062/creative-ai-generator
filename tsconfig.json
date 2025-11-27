@@ -1,38 +1,29 @@
-// tsconfig.json (NEW file for CDK)
 {
   "compilerOptions": {
-    "target": "es2020", // Modern JS target
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
     "skipLibCheck": true,
-    "baseUrl": ".",
-    "outDir": "cdk.out", // Output directory for CDK synthesis
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": true, // Good for ts-node's transpileOnly mode
-    "noEmit": true, // CDK usually synthesizes, not emits JS files directly
-    "typeRoots": ["./node_modules/@types"],
-    "module": "commonjs", // CRITICAL: Ensure this is commonjs
-    "moduleResolution": "node", // CRITICAL: Ensure this is node
-    "esModuleInterop": true
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./*"]
+    }
   },
-  "include": [
-    "bin/**/*.ts",
-    "lib/**/*.ts",
-    "infra/**/*.ts",
-    "lambda/**/*.ts" // Make sure to include your Lambda TypeScript files
-  ],
-  "exclude": [
-    "node_modules",
-    "cdk.out",
-    "**/*.js", // Exclude JS files
-    // Exclude Next.js specific files/folders from CDK's compilation scope
-    "app",
-    "components",
-    "context",
-    "public",
-    "next-env.d.ts"
-  ],
-  "paths": {
-    "@/*": ["./*"]
-  }
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "exclude": ["node_modules", "cdk.out"]
 }

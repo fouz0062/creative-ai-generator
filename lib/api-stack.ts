@@ -3,13 +3,12 @@
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as nodejs from 'aws-cdk-lib/aws-lambda-nodejs';
-// Ensure Cors is imported from the alpha module, along with HttpApi and HttpMethod
 import { HttpApi, HttpMethod, CorsHttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
 import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 import { Construct } from 'constructs';
 import { Table } from 'aws-cdk-lib/aws-dynamodb'; 
 import { Bucket } from 'aws-cdk-lib/aws-s3';
-import * as path from 'path'; // Need path for the entry point
+import * as path from 'path';
 
 // Define the interface for the ApiStack's props
 export interface ApiStackProps extends cdk.StackProps {
@@ -18,25 +17,22 @@ export interface ApiStackProps extends cdk.StackProps {
 }
 
 export class ApiStack extends cdk.Stack {
+  public readonly httpApi: HttpApi; // <--- NEW: Public declaration
   public readonly apiUrl: cdk.CfnOutput;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
     super(scope, id, props);
 
     // 1. Define the Creative Computer (Lambda Function)
-    const generateImageLambda = new nodejs.NodejsFunction(this, 'GenerateImageHandler', {
+    const generateImageLambda = new lambda.Function(this, 'GenerateImageHandler', {
       runtime: lambda.Runtime.NODEJS_20_X,
-      // FIX: Ensure the entry path is correct relative to the cdk.ts file
-      entry: path.join(__dirname, '..', 'lambda', 'generateImage.ts'),
-      handler: 'handler',
+      code: lambda.Code.fromAsset(path.join(__dirname, '..', 'lambda', 'generateImage')),
+      handler: 'index.handler',
       timeout: cdk.Duration.seconds(30),
       memorySize: 512,
       environment: {
         DYNAMODB_TABLE_NAME: props.imagesTable.tableName,
         S3_BUCKET_NAME: props.imageBucket.bucketName,
-      },
-      bundling: {
-        externalModules: ['aws-sdk'], // Prevent bundling the AWS SDK
       },
     });
 
@@ -45,15 +41,13 @@ export class ApiStack extends cdk.Stack {
     props.imageBucket.grantWrite(generateImageLambda);
 
     // 3. Define the HTTP API Gateway
-    const httpApi = new HttpApi(this, 'ImageGenerationApi', {
+    this.httpApi = new HttpApi(this, 'ImageGenerationApi', { // <--- ASSIGNED to public property
       apiName: 'ImageGenerationApi',
-      // FIX: Use 'corsPreflight' property in the constructor
       corsPreflight: {
-        // Use the utility to allow GET, PUT, POST, DELETE, HEAD, PATCH
         allowMethods: [CorsHttpMethod.ANY],
-        allowOrigins: ['*'], // IMPORTANT: Restrict this in production!
+        allowOrigins: ['*'],
         allowHeaders: ['Content-Type', 'Authorization'],
-        maxAge: cdk.Duration.days(1), // Cache preflight response for 1 day
+        maxAge: cdk.Duration.days(1),
       },
     });
 
@@ -63,7 +57,7 @@ export class ApiStack extends cdk.Stack {
       generateImageLambda
     );
 
-    httpApi.addRoutes({
+    this.httpApi.addRoutes({
       path: '/generate',
       methods: [HttpMethod.POST],
       integration: generateIntegration,
@@ -71,7 +65,7 @@ export class ApiStack extends cdk.Stack {
 
     // 5. Output the API URL
     this.apiUrl = new cdk.CfnOutput(this, 'ApiUrl', {
-      value: httpApi.url || 'No API URL available',
+      value: this.httpApi.url || 'No API URL available',
     });
   }
 }
