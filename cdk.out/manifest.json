@@ -11,21 +11,21 @@
     },
     "ZiaGenDataStack": {
       "type": "aws:cloudformation:stack",
-      "environment": "aws://686123098700/eu-central-1",
+      "environment": "aws://686123098700/us-east-1",
       "properties": {
         "templateFile": "ZiaGenDataStack.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-eu-central-1",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-eu-central-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-eu-central-1/33c1fd4fe33851602dab7b2c4e75441b53ae4c336bd5a0f7897646a5d53b5f9f.json",
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/219088bf9b36cb65ea2b9b3f7fa6d0b2fe82ebb92cb41e50d792893ff992d0dd.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
           "ZiaGenDataStack.assets"
         ],
         "lookupRole": {
-          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-eu-central-1",
+          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-us-east-1",
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         }
@@ -151,21 +151,21 @@
     },
     "ZiaGenApiStack": {
       "type": "aws:cloudformation:stack",
-      "environment": "aws://686123098700/eu-central-1",
+      "environment": "aws://686123098700/us-east-1",
       "properties": {
         "templateFile": "ZiaGenApiStack.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-eu-central-1",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-eu-central-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-eu-central-1/8f5bd0ada859a3bab60cc7be5df105d0cf5d6f2a58fa4dc903718f6d8aac67de.json",
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/19fc003388cb749516e822032a59dbb43f892499c6a8b8d7e67c39b1e8adeb27.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
           "ZiaGenApiStack.assets"
         ],
         "lookupRole": {
-          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-eu-central-1",
+          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-us-east-1",
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         }
@@ -260,21 +260,21 @@
     },
     "ZiaGenCognitoStack": {
       "type": "aws:cloudformation:stack",
-      "environment": "aws://686123098700/eu-central-1",
+      "environment": "aws://686123098700/us-east-1",
       "properties": {
         "templateFile": "ZiaGenCognitoStack.template.json",
         "terminationProtection": false,
         "validateOnSynth": false,
-        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-eu-central-1",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-eu-central-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-eu-central-1/b3fb6dc6c141108692a632a490bb6f8d5400887ad392312026159b59d0e299d4.json",
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/b3fb6dc6c141108692a632a490bb6f8d5400887ad392312026159b59d0e299d4.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
           "ZiaGenCognitoStack.assets"
         ],
         "lookupRole": {
-          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-eu-central-1",
+          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-us-east-1",
           "requiresBootstrapStackVersion": 8,
           "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
         }

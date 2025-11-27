@@ -12,6 +12,7 @@
     "@aws-cdk/aws-apigatewayv2-alpha": "^2.114.1-alpha.0",
     "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.114.1-alpha.0",
     "@aws-cdk/aws-lambda-nodejs": "^1.203.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.941.0",
     "@types/dotenv": "^6.1.1",
     "aws-amplify": "^6.15.8",
     "aws-cdk-lib": "^2.226.0",

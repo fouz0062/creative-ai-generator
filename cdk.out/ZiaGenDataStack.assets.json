@@ -8,26 +8,26 @@
         "packaging": "zip"
       },
       "destinations": {
-        "686123098700-eu-central-1-91a9a1e7": {
-          "bucketName": "cdk-hnb659fds-assets-686123098700-eu-central-1",
+        "686123098700-us-east-1-13bd925d": {
+          "bucketName": "cdk-hnb659fds-assets-686123098700-us-east-1",
           "objectKey": "faa95a81ae7d7373f3e1f242268f904eb748d8d0fdd306e8a6fe515a1905a7d6.zip",
-          "region": "eu-central-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-eu-central-1"
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-us-east-1"
         }
       }
     },
-    "33c1fd4fe33851602dab7b2c4e75441b53ae4c336bd5a0f7897646a5d53b5f9f": {
+    "219088bf9b36cb65ea2b9b3f7fa6d0b2fe82ebb92cb41e50d792893ff992d0dd": {
       "displayName": "ZiaGenDataStack Template",
       "source": {
         "path": "ZiaGenDataStack.template.json",
         "packaging": "file"
       },
       "destinations": {
-        "686123098700-eu-central-1-18094433": {
-          "bucketName": "cdk-hnb659fds-assets-686123098700-eu-central-1",
-          "objectKey": "33c1fd4fe33851602dab7b2c4e75441b53ae4c336bd5a0f7897646a5d53b5f9f.json",
-          "region": "eu-central-1",
-          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-eu-central-1"
+        "686123098700-us-east-1-84d4f354": {
+          "bucketName": "cdk-hnb659fds-assets-686123098700-us-east-1",
+          "objectKey": "219088bf9b36cb65ea2b9b3f7fa6d0b2fe82ebb92cb41e50d792893ff992d0dd.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-us-east-1"
         }
       }
     }

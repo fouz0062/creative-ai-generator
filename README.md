@@ -4,9 +4,9 @@
 
 ## 🚀 Project Status
 
-**Current Phase: Backend Infrastructure Deployed**
+**Current Phase: Core Backend API Complete & Functioning**
 
-We have successfully deployed the foundational AWS backend infrastructure, including core data storage (S3 & DynamoDB), user authentication (Cognito), and the API Gateway endpoint connected to a placeholder Lambda function. The frontend UI with mock data is also complete.
+We have successfully deployed and configured the complete backend infrastructure, including core data storage (S3 & DynamoDB), user authentication (Cognito), and the **fully functional image generation API** integrated with Amazon Bedrock. The frontend UI with mock data is also complete.
 
 ## ✨ Key Features (Currently Implemented)
 
@@ -23,14 +23,17 @@ We have successfully deployed the foundational AWS backend infrastructure, inclu
   - Click-to-select functionality to re-populate the main panel with a previous prompt and image.
 - **Mock Authentication:** Simulated user login and logout to test UI states and protected views.
 
-### Backend Infrastructure (Deployed to AWS)
+### Backend (Deployed & Functional to AWS)
 
 - **Amazon DynamoDB:** Table (`ZiaGenImages`) for storing image metadata.
 - **Amazon S3:** Bucket (`ZiaGenImageBucket`) for storing generated images.
 - **Amazon Cognito:** User Pool (`ZiaGenUserPool`) and App Client (`ZiaGenAppClient`) for user authentication.
 - **Amazon API Gateway:** HTTP API (`ImageGenerationApi`) with a `POST /generate` endpoint.
-- **AWS Lambda:** Placeholder function (`GenerateImageHandler`) integrated with API Gateway, S3, and DynamoDB.
-- **Infrastructure as Code (IaC):** All backend resources defined and deployed using AWS CDK (TypeScript).
+- **AWS Lambda:**
+  - **`GenerateImageHandler`:** Fully implemented and integrated with API Gateway.
+  - **Seamless Bedrock Integration:** Successfully invokes **Amazon Titan Image Generator v1** in `us-east-1` to create images from prompts.
+  - **Image Persistence:** Stores generated images in S3 and their metadata (including `imageUrl`) in DynamoDB.
+- **Infrastructure as Code (IaC):** All backend resources (Data, API, Cognito) are defined and deployed using AWS CDK (TypeScript) in `us-east-1`.
 
 ## 🛠️ Tech Stack
 
@@ -46,7 +49,7 @@ We have successfully deployed the foundational AWS backend infrastructure, inclu
   - Amazon DynamoDB
   - Amazon S3
   - Amazon Cognito
-  - Amazon Bedrock (AI Model - _Upcoming integration in Phase 2_)
+  - **Amazon Bedrock (AI Model - Amazon Titan Image Generator v1)**
 
 ## 📂 Project Structure
 
@@ -88,7 +91,7 @@ We have successfully deployed the foundational AWS backend infrastructure, inclu
 ### Backend (Deployed Infrastructure)
 
 1.  **Prerequisites:**
-    - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with your AWS credentials and default region (`eu-central-1`).
+    - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with your AWS credentials.
     - [Node.js](https://nodejs.org/) (LTS recommended).
     - [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install) installed globally (`npm install -g aws-cdk`).
 2.  **Navigate to the project root:**
@@ -103,21 +106,27 @@ We have successfully deployed the foundational AWS backend infrastructure, inclu
     ```
     # .env
     AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID
-    AWS_REGION=eu-central-1
+    AWS_REGION=us-east-1 # Bedrock deployment region for Titan Image Generator
     ```
     _(Remember to replace `YOUR_AWS_ACCOUNT_ID` with your actual 12-digit AWS Account ID.)_
 5.  **Bootstrap CDK (if not already done):**
     ```bash
-    cdk bootstrap aws://YOUR_AWS_ACCOUNT_ID/eu-central-1
+    cdk bootstrap aws://YOUR_AWS_ACCOUNT_ID/us-east-1
     ```
 6.  **Deploy the backend infrastructure:**
     ```bash
     cdk deploy --all
     ```
-    _(Confirm the IAM changes by typing `y`.)_
+    _(Confirm any IAM or security changes by typing `y` if prompted, or use `--require-approval never` for non-interactive deployment.)_
+7.  **Verify Bedrock Model Access:** Ensure `Amazon Titan Image Generator v1` has "Access granted" in the Bedrock console in the `US East (N. Virginia) us-east-1` region.
+8.  **Test the API Endpoint:**
+    - **Method:** `POST`
+    - **URL:** (Find in CDK deploy output, e.g., `https://jiclxodrh6.execute-api.us-east-1.amazonaws.com/`) Append `/generate` to it.
+    - **Headers:** `Content-Type: application/json`
+    - **Body (JSON):** `{"prompt": "A majestic lion wearing a crown, in a vibrant jungle, digital painting"}`
+    - Expected: `200 OK` with `imageUrl` in the response.
 
 ## 📅 Upcoming Phases
 
-- **Phase 2: Backend API Logic (Bedrock Integration):** Implement the core logic within the Lambda function to interact with Amazon Bedrock, generate images, and store them in S3/DynamoDB.
-- **Phase 3: Frontend Integration with Real Backend:** Connect the Next.js frontend to the deployed AWS Cognito for authentication and the API Gateway for image generation. Display real generated images.
-- **Phase 4: CI/CD & Final Polish:** Automate deployment for both frontend and backend, perform comprehensive testing, and enhance user experience.
+- **Phase 2: Frontend Integration with Real Backend:** Connect the Next.js frontend to the deployed AWS Cognito for authentication and the API Gateway for real image generation. Display actual generated images from S3.
+- **Phase 3: CI/CD & Final Polish:** Automate deployment for both frontend and backend, perform comprehensive testing, and enhance user experience.

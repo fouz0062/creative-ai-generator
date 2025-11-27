@@ -1,4 +1,5 @@
 // lib/api-stack.ts
+//
 
 import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
@@ -9,6 +10,7 @@ import { Construct } from 'constructs';
 import { Table } from 'aws-cdk-lib/aws-dynamodb'; 
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as path from 'path';
+import * as iam from 'aws-cdk-lib/aws-iam'; // ⬅️ NEW: Import IAM for policy statements
 
 // Define the interface for the ApiStack's props
 export interface ApiStackProps extends cdk.StackProps {
@@ -17,7 +19,7 @@ export interface ApiStackProps extends cdk.StackProps {
 }
 
 export class ApiStack extends cdk.Stack {
-  public readonly httpApi: HttpApi; // <--- NEW: Public declaration
+  public readonly httpApi: HttpApi;
   public readonly apiUrl: cdk.CfnOutput;
 
   constructor(scope: Construct, id: string, props: ApiStackProps) {
@@ -26,10 +28,11 @@ export class ApiStack extends cdk.Stack {
     // 1. Define the Creative Computer (Lambda Function)
     const generateImageLambda = new lambda.Function(this, 'GenerateImageHandler', {
       runtime: lambda.Runtime.NODEJS_20_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, '..', 'lambda', 'generateImage')),
+      // Uses existing Code.fromAsset configuration
+      code: lambda.Code.fromAsset(path.join(__dirname, '..', 'lambda', 'generateImage')), 
       handler: 'index.handler',
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 512,
+      timeout: cdk.Duration.seconds(30), // ⬅️ Increased timeout for Bedrock
+      memorySize: 512, // ⬅️ Increased memory for image processing
       environment: {
         DYNAMODB_TABLE_NAME: props.imagesTable.tableName,
         S3_BUCKET_NAME: props.imageBucket.bucketName,
@@ -40,8 +43,16 @@ export class ApiStack extends cdk.Stack {
     props.imagesTable.grantWriteData(generateImageLambda);
     props.imageBucket.grantWrite(generateImageLambda);
 
+    // ⬅️ NEW: Grant permission to invoke the Bedrock model
+    generateImageLambda.addToRolePolicy(new iam.PolicyStatement({
+      effect: iam.Effect.ALLOW,
+      actions: ["bedrock:InvokeModel"],
+      // Grants access to Amazon Titan Image Generator (free tier eligible)
+      resources: [`arn:aws:bedrock:${this.region}::foundation-model/amazon.titan-image-generator-v1`],
+    }));
+
     // 3. Define the HTTP API Gateway
-    this.httpApi = new HttpApi(this, 'ImageGenerationApi', { // <--- ASSIGNED to public property
+    this.httpApi = new HttpApi(this, 'ImageGenerationApi', {
       apiName: 'ImageGenerationApi',
       corsPreflight: {
         allowMethods: [CorsHttpMethod.ANY],
