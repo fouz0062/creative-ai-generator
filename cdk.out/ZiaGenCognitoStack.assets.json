@@ -1,0 +1,21 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "b3fb6dc6c141108692a632a490bb6f8d5400887ad392312026159b59d0e299d4": {
+      "displayName": "ZiaGenCognitoStack Template",
+      "source": {
+        "path": "ZiaGenCognitoStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "686123098700-eu-central-1-46130980": {
+          "bucketName": "cdk-hnb659fds-assets-686123098700-eu-central-1",
+          "objectKey": "b3fb6dc6c141108692a632a490bb6f8d5400887ad392312026159b59d0e299d4.json",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-eu-central-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

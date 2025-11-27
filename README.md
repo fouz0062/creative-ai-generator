@@ -4,11 +4,13 @@
 
 ## 🚀 Project Status
 
-**Current Phase:** Complete - Next.js UI & Mock Data
+**Current Phase: Backend Infrastructure Deployed**
 
-We have successfully built the complete frontend user interface with functional mock data. The application's look, feel, and user flow are fully realized.
+We have successfully deployed the foundational AWS backend infrastructure, including core data storage (S3 & DynamoDB), user authentication (Cognito), and the API Gateway endpoint connected to a placeholder Lambda function. The frontend UI with mock data is also complete.
 
-## ✨ Key Features (Phase 1 Implemented)
+## ✨ Key Features (Currently Implemented)
+
+### Frontend (Complete - Next.js UI & Mock Data)
 
 - **Modern Dark Mode UI:** A sleek, professional dark-themed interface built with Tailwind CSS.
 - **Dual-Panel Layout:** A responsive design featuring a history sidebar and a main generation panel for an efficient workflow.
@@ -21,6 +23,15 @@ We have successfully built the complete frontend user interface with functional 
   - Click-to-select functionality to re-populate the main panel with a previous prompt and image.
 - **Mock Authentication:** Simulated user login and logout to test UI states and protected views.
 
+### Backend Infrastructure (Deployed to AWS)
+
+- **Amazon DynamoDB:** Table (`ZiaGenImages`) for storing image metadata.
+- **Amazon S3:** Bucket (`ZiaGenImageBucket`) for storing generated images.
+- **Amazon Cognito:** User Pool (`ZiaGenUserPool`) and App Client (`ZiaGenAppClient`) for user authentication.
+- **Amazon API Gateway:** HTTP API (`ImageGenerationApi`) with a `POST /generate` endpoint.
+- **AWS Lambda:** Placeholder function (`GenerateImageHandler`) integrated with API Gateway, S3, and DynamoDB.
+- **Infrastructure as Code (IaC):** All backend resources defined and deployed using AWS CDK (TypeScript).
+
 ## 🛠️ Tech Stack
 
 - **Frontend:**
@@ -28,13 +39,14 @@ We have successfully built the complete frontend user interface with functional 
   - [TypeScript](https://www.typescriptlang.org/)
   - [Tailwind CSS](https://tailwindcss.com/)
   - [React Context API](https://react.dev/learn/passing-data-deeply-with-context) (for state management)
-- **Backend (Upcoming in Phase 2 & 3):**
-  - AWS Lambda (Node Js)
+- **Backend:**
+  - AWS CDK (TypeScript)
+  - AWS Lambda (Node.js)
   - Amazon API Gateway
   - Amazon DynamoDB
   - Amazon S3
   - Amazon Cognito
-  - Amazon Bedrock (AI Model)
+  - Amazon Bedrock (AI Model - _Upcoming integration in Phase 2_)
 
 ## 📂 Project Structure
 
@@ -49,13 +61,19 @@ We have successfully built the complete frontend user interface with functional 
   - `AuthPlaceholder.tsx`: Temporary component for simulating login/logout.
 - `context/`: React Context definitions.
   - `AuthContext.tsx`: Provides authentication state to the application.
+- `bin/`: AWS CDK application entry point.
+- `lib/`: AWS CDK stack definitions (e.g., `data-stack.ts`, `api-stack.ts`, `cognito-stack.ts`).
+- `lambda/`: Lambda function source code (e.g., `generateImage.ts`).
+- `.env`: Environment variables for AWS Account ID and Region (local only, excluded from Git).
 
-## ⚡ Getting Started (Run locally with mock data)
+## ⚡ Getting Started (Run Locally)
+
+### Frontend (with mock data)
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/fouz0062/creative-ai-generator.git
-    cd ziagen
+    git clone [https://github.com/fouz0062/creative-ai-generator.git](https://github.com/fouz0062/creative-ai-generator.git)
+    cd creative-ai-generator
     ```
 2.  **Install dependencies:**
     ```bash
@@ -67,8 +85,39 @@ We have successfully built the complete frontend user interface with functional 
     ```
 4.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
+### Backend (Deployed Infrastructure)
+
+1.  **Prerequisites:**
+    - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with your AWS credentials and default region (`eu-central-1`).
+    - [Node.js](https://nodejs.org/) (LTS recommended).
+    - [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install) installed globally (`npm install -g aws-cdk`).
+2.  **Navigate to the project root:**
+    ```bash
+    cd creative-ai-generator
+    ```
+3.  **Install backend dependencies:**
+    ```bash
+    npm install
+    ```
+4.  **Create a `.env` file** in the project root with your AWS Account ID and Region:
+    ```
+    # .env
+    AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID
+    AWS_REGION=eu-central-1
+    ```
+    _(Remember to replace `YOUR_AWS_ACCOUNT_ID` with your actual 12-digit AWS Account ID.)_
+5.  **Bootstrap CDK (if not already done):**
+    ```bash
+    cdk bootstrap aws://YOUR_AWS_ACCOUNT_ID/eu-central-1
+    ```
+6.  **Deploy the backend infrastructure:**
+    ```bash
+    cdk deploy --all
+    ```
+    _(Confirm the IAM changes by typing `y`.)_
+
 ## 📅 Upcoming Phases
 
-- **Phase 2: Cloud Foundation & Authentication:** Set up AWS Cognito for real user auth and define core AWS resources (DynamoDB, S3) using Infrastructure as Code (IaC).
-- **Phase 3: Backend API Development:** Build serverless Lambda functions to interact with Amazon Bedrock for real image generation and integrate them with the frontend.
-- **Phase 4: CI/CD & Final Polish:** Automate deployment and perform final testing.
+- **Phase 2: Backend API Logic (Bedrock Integration):** Implement the core logic within the Lambda function to interact with Amazon Bedrock, generate images, and store them in S3/DynamoDB.
+- **Phase 3: Frontend Integration with Real Backend:** Connect the Next.js frontend to the deployed AWS Cognito for authentication and the API Gateway for image generation. Display real generated images.
+- **Phase 4: CI/CD & Final Polish:** Automate deployment for both frontend and backend, perform comprehensive testing, and enhance user experience.

@@ -1,0 +1,36 @@
+{
+  "version": "48.0.0",
+  "files": {
+    "dc433b8e49e7b3f9387aeaeff7bb8bebc38a0b16d568faacbb9f9fec2b13d9f1": {
+      "displayName": "GenerateImageHandler/Code",
+      "source": {
+        "path": "asset.dc433b8e49e7b3f9387aeaeff7bb8bebc38a0b16d568faacbb9f9fec2b13d9f1",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "686123098700-eu-central-1-75c1c711": {
+          "bucketName": "cdk-hnb659fds-assets-686123098700-eu-central-1",
+          "objectKey": "dc433b8e49e7b3f9387aeaeff7bb8bebc38a0b16d568faacbb9f9fec2b13d9f1.zip",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-eu-central-1"
+        }
+      }
+    },
+    "8f5bd0ada859a3bab60cc7be5df105d0cf5d6f2a58fa4dc903718f6d8aac67de": {
+      "displayName": "ZiaGenApiStack Template",
+      "source": {
+        "path": "ZiaGenApiStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "686123098700-eu-central-1-807df2c8": {
+          "bucketName": "cdk-hnb659fds-assets-686123098700-eu-central-1",
+          "objectKey": "8f5bd0ada859a3bab60cc7be5df105d0cf5d6f2a58fa4dc903718f6d8aac67de.json",
+          "region": "eu-central-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-file-publishing-role-686123098700-eu-central-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}

@@ -9,8 +9,14 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@aws-cdk/aws-apigatewayv2-alpha": "^2.114.1-alpha.0",
+    "@aws-cdk/aws-apigatewayv2-integrations-alpha": "^2.114.1-alpha.0",
+    "@aws-cdk/aws-lambda-nodejs": "^1.203.0",
+    "@types/dotenv": "^6.1.1",
+    "aws-amplify": "^6.15.8",
     "aws-cdk-lib": "^2.226.0",
     "constructs": "^10.4.3",
+    "dotenv": "^17.2.3",
     "next": "16.0.3",
     "postcss": "^8.5.6",
     "react": "19.2.0",
@@ -20,11 +26,13 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.17",
+    "@types/aws-lambda": "^8.10.159",
     "@types/node": "^20.19.25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
+    "source-map-support": "^0.5.21",
     "typescript": "^5.9.3"
   }
 }
