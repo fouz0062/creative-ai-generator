@@ -1,0 +1,9 @@
+{
+  "name": "delete-image-lambda",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.940.0",
+    "@aws-sdk/client-s3": "^3.940.0"
+  }
+}

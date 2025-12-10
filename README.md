@@ -1,132 +1,294 @@
-# ZiaGen - Creative AI Image Generator
+# 🎨 ZiaGen - AI Image Generator
 
-**ZiaGen** is a cutting-edge, serverless generative AI application that allows users to create stunning images from text prompts. Built with a modern Next.js frontend and powered by AWS cloud services, ZiaGen offers a seamless and powerful creative experience.
+> **Transform your imagination into stunning visuals with the power of AI - completely free!**
 
-## 🚀 Project Status
+ZiaGen is a modern, fully-featured AI image generation platform that brings your creative ideas to life. Built with cutting-edge web technologies and powered by free AI services, ZiaGen makes professional image generation accessible to everyone.
 
-**Current Phase: Core Backend API Complete & Functioning**
+---
 
-We have successfully deployed and configured the complete backend infrastructure, including core data storage (S3 & DynamoDB), user authentication (Cognito), and the **fully functional image generation API** integrated with Amazon Bedrock. The frontend UI with mock data is also complete.
+## ✨ Features
 
-## ✨ Key Features (Currently Implemented)
+### 🖼️ **Powerful Image Generation**
 
-### Frontend (Complete - Next.js UI & Mock Data)
+- **Multiple Artistic Styles**: Choose from 12+ styles including Studio Ghibli, Cartoon, Pixel Art, Realistic, Oil Painting, Watercolor, Cyberpunk, Fantasy, and more!
+- **Custom Dimensions**: Generate images in various sizes - Square (512px to 1024px), Portrait, Landscape, or Wide formats
+- **Smart Regeneration**: Refine and regenerate images while keeping the same file - no duplicates!
+- **Instant Results**: Fast image generation with visual loading states
 
-- **Modern Dark Mode UI:** A sleek, professional dark-themed interface built with Tailwind CSS.
-- **Dual-Panel Layout:** A responsive design featuring a history sidebar and a main generation panel for an efficient workflow.
-- **AI Image Generation Flow (Mock):**
-  - Prompt input field.
-  - "Generate" button with realistic loading states.
-  - Display area for generated images (currently using placeholder data).
-- **History & Gallery (Mock):**
-  - Sidebar displaying thumbnails of past generations (using mock data).
-  - Click-to-select functionality to re-populate the main panel with a previous prompt and image.
-- **Mock Authentication:** Simulated user login and logout to test UI states and protected views.
+### 🎯 **Intuitive User Experience**
 
-### Backend (Deployed & Functional to AWS)
+- **Beautiful Dark UI**: Sleek interface with purple/violet gradient accents and glowing effects
+- **Fully Responsive**: Perfect experience on desktop, tablet, and mobile devices
+- **Image Gallery**: Browse all your creations with thumbnails and quick selection
+- **Easy Management**: Delete unwanted images with a single click
 
-- **Amazon DynamoDB:** Table (`ZiaGenImages`) for storing image metadata.
-- **Amazon S3:** Bucket (`ZiaGenImageBucket`) for storing generated images.
-- **Amazon Cognito:** User Pool (`ZiaGenUserPool`) and App Client (`ZiaGenAppClient`) for user authentication.
-- **Amazon API Gateway:** HTTP API (`ImageGenerationApi`) with a `POST /generate` endpoint.
-- **AWS Lambda:**
-  - **`GenerateImageHandler`:** Fully implemented and integrated with API Gateway.
-  - **Seamless Bedrock Integration:** Successfully invokes **Amazon Titan Image Generator v1** in `us-east-1` to create images from prompts.
-  - **Image Persistence:** Stores generated images in S3 and their metadata (including `imageUrl`) in DynamoDB.
-- **Infrastructure as Code (IaC):** All backend resources (Data, API, Cognito) are defined and deployed using AWS CDK (TypeScript) in `us-east-1`.
+### 🔐 **Secure Authentication**
 
-## 🛠️ Tech Stack
+- **AWS Cognito Integration**: Enterprise-grade user authentication
+- **Email Verification**: Secure account creation with confirmation codes
+- **Password Recovery**: Easy password reset flow
+- **Protected Access**: Your images are private and secure
 
-- **Frontend:**
-  - [Next.js 14](https://nextjs.org/) (App Router)
-  - [TypeScript](https://www.typescriptlang.org/)
-  - [Tailwind CSS](https://tailwindcss.com/)
-  - [React Context API](https://react.dev/learn/passing-data-deeply-with-context) (for state management)
-- **Backend:**
-  - AWS CDK (TypeScript)
-  - AWS Lambda (Node.js)
-  - Amazon API Gateway
-  - Amazon DynamoDB
-  - Amazon S3
-  - Amazon Cognito
-  - **Amazon Bedrock (AI Model - Amazon Titan Image Generator v1)**
+### 💾 **Cloud Storage**
+
+- **Amazon S3**: All generated images are stored in the cloud
+- **Metadata Tracking**: Each image saves its prompt and settings
+- **Persistent Gallery**: Access your images anytime, anywhere
+
+---
+
+## 🚀 Tech Stack
+
+### **Frontend**
+
+- ⚛️ **Next.js 16** (App Router) - React framework for production
+- 📘 **TypeScript** - Type-safe development
+- 🎨 **Tailwind CSS** - Utility-first styling
+- 🖼️ **Next/Image** - Optimized image loading
+- 🔄 **React Context** - State management
+
+### **Backend & Infrastructure**
+
+- ☁️ **AWS S3** - Cloud image storage
+- 🔐 **AWS Cognito** - User authentication
+- 🏗️ **AWS CDK** - Infrastructure as Code
+- 🎨 **Pollinations.ai** - Free AI image generation
+- 📦 **AWS SDK** - S3 operations
+
+### **AI & APIs**
+
+- 🤖 **Pollinations.ai** - Free, unlimited AI image generation
+- 🎭 **12+ Art Styles** - From anime to photorealistic
+- 📐 **8 Dimension Presets** - Flexible image sizing
+
+---
 
 ## 📂 Project Structure
 
-- `app/`: Next.js App Router pages and layouts.
-  - `page.tsx`: The main homepage, integrating the sidebar and main panel.
-  - `layout.tsx`: Root layout including global providers (AuthContext) and styles.
-  - `globals.css`: Global styles and Tailwind directives.
-- `components/`: Reusable UI components.
-  - `Layout.tsx`: The main two-column application layout.
-  - `MainGeneratorPanel.tsx`: The core component for image generation input and display.
-  - `GallerySidebar.tsx`: The sidebar component for displaying history thumbnails.
-  - `AuthPlaceholder.tsx`: Temporary component for simulating login/logout.
-- `context/`: React Context definitions.
-  - `AuthContext.tsx`: Provides authentication state to the application.
-- `bin/`: AWS CDK application entry point.
-- `lib/`: AWS CDK stack definitions (e.g., `data-stack.ts`, `api-stack.ts`, `cognito-stack.ts`).
-- `lambda/`: Lambda function source code (e.g., `generateImage.ts`).
-- `.env`: Environment variables for AWS Account ID and Region (local only, excluded from Git).
+```
+creative-ai-generator/
+├── app/                      # Next.js App Router
+│   ├── api/                  # API routes
+│   │   ├── generate-hf/      # Image generation endpoint
+│   │   ├── list-images/      # Gallery listing endpoint
+│   │   └── delete-image/     # Image deletion endpoint
+│   ├── layout.tsx            # Root layout with providers
+│   ├── page.tsx              # Main application page
+│   └── globals.css           # Global styles
+├── components/               # React components
+│   ├── MainGeneratorPanel.tsx   # Image generation UI
+│   ├── GallerySidebar.tsx       # Image gallery & navigation
+│   ├── AuthPlaceholder.tsx      # Authentication forms
+│   ├── Layout.tsx               # App layout wrapper
+│   └── AmplifyConfigProvider.tsx # AWS Amplify setup
+├── context/                  # React Context
+│   └── AuthContext.tsx       # Authentication state
+├── lib/                      # AWS CDK stacks
+│   ├── amplify-config.ts     # Amplify configuration
+│   ├── data-stack.ts         # S3 & DynamoDB stack
+│   ├── api-stack.ts          # API Gateway & Lambda
+│   └── cognito-stack.ts      # User authentication
+└── lambda/                   # Lambda functions
+    ├── generateImage/        # Image generation handler
+    ├── listImages/           # List user images
+    └── deleteImage/          # Delete image handler
+```
 
-## ⚡ Getting Started (Run Locally)
+---
 
-### Frontend (with mock data)
+## 🎯 Getting Started
 
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/fouz0062/creative-ai-generator.git](https://github.com/fouz0062/creative-ai-generator.git)
-    cd creative-ai-generator
-    ```
-2.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
-3.  **Run the development server:**
-    ```bash
-    npm run dev
-    ```
-4.  Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
+### **Prerequisites**
 
-### Backend (Deployed Infrastructure)
+- Node.js 18+ and npm
+- AWS Account (for authentication and storage)
+- AWS CLI configured with your credentials
 
-1.  **Prerequisites:**
-    - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with your AWS credentials.
-    - [Node.js](https://nodejs.org/) (LTS recommended).
-    - [AWS CDK CLI](https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html#getting_started_install) installed globally (`npm install -g aws-cdk`).
-2.  **Navigate to the project root:**
-    ```bash
-    cd creative-ai-generator
-    ```
-3.  **Install backend dependencies:**
-    ```bash
-    npm install
-    ```
-4.  **Create a `.env` file** in the project root with your AWS Account ID and Region:
-    ```
-    # .env
-    AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID
-    AWS_REGION=us-east-1 # Bedrock deployment region for Titan Image Generator
-    ```
-    _(Remember to replace `YOUR_AWS_ACCOUNT_ID` with your actual 12-digit AWS Account ID.)_
-5.  **Bootstrap CDK (if not already done):**
-    ```bash
-    cdk bootstrap aws://YOUR_AWS_ACCOUNT_ID/us-east-1
-    ```
-6.  **Deploy the backend infrastructure:**
-    ```bash
-    cdk deploy --all
-    ```
-    _(Confirm any IAM or security changes by typing `y` if prompted, or use `--require-approval never` for non-interactive deployment.)_
-7.  **Verify Bedrock Model Access:** Ensure `Amazon Titan Image Generator v1` has "Access granted" in the Bedrock console in the `US East (N. Virginia) us-east-1` region.
-8.  **Test the API Endpoint:**
-    - **Method:** `POST`
-    - **URL:** (Find in CDK deploy output, e.g., `https://jiclxodrh6.execute-api.us-east-1.amazonaws.com/`) Append `/generate` to it.
-    - **Headers:** `Content-Type: application/json`
-    - **Body (JSON):** `{"prompt": "A majestic lion wearing a crown, in a vibrant jungle, digital painting"}`
-    - Expected: `200 OK` with `imageUrl` in the response.
+### **1. Clone the Repository**
 
-## 📅 Upcoming Phases
+```bash
+git clone https://github.com/fouz0062/creative-ai-generator.git
+cd creative-ai-generator
+```
 
-- **Phase 2: Frontend Integration with Real Backend:** Connect the Next.js frontend to the deployed AWS Cognito for authentication and the API Gateway for real image generation. Display actual generated images from S3.
-- **Phase 3: CI/CD & Final Polish:** Automate deployment for both frontend and backend, perform comprehensive testing, and enhance user experience.
+### **2. Install Dependencies**
+
+```bash
+npm install
+```
+
+### **3. Configure Environment Variables**
+
+Create a `.env.local` file in the root directory:
+
+```env
+# AWS Configuration
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=us-east-1
+S3_BUCKET_NAME=your-s3-bucket-name
+
+# Cognito Configuration
+NEXT_PUBLIC_USER_POOL_ID=your_user_pool_id
+NEXT_PUBLIC_USER_POOL_CLIENT_ID=your_client_id
+NEXT_PUBLIC_API_REGION=us-east-1
+
+# API Gateway (for legacy Lambda functions)
+NEXT_PUBLIC_API_URL=your_api_gateway_url
+```
+
+### **4. Deploy AWS Infrastructure**
+
+```bash
+# Bootstrap CDK (first time only)
+cdk bootstrap aws://YOUR_ACCOUNT_ID/us-east-1
+
+# Deploy all stacks
+cdk deploy --all
+```
+
+### **5. Run the Development Server**
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser and start creating! 🎨
+
+---
+
+## 🎨 How to Use
+
+### **Create Your First Image**
+
+1. **Sign Up / Sign In** - Create an account or log in
+2. **Choose Your Style** - Select from 12+ artistic styles
+3. **Pick Dimensions** - Choose your preferred image size
+4. **Enter Your Prompt** - Describe what you want to see
+5. **Click Generate** - Watch your idea come to life!
+
+### **Manage Your Gallery**
+
+- **View All Images** - Browse your creations in the sidebar
+- **Regenerate** - Click any image to modify and regenerate it
+- **Delete** - Remove images you no longer want
+- **Refresh** - Update the gallery to see new images
+
+### **Available Styles**
+
+- 🎌 **Studio Ghibli / Anime** - Soft, hand-drawn animation style
+- 🎭 **Cartoon / Comic** - Bold outlines and vibrant colors
+- 🕹️ **Pixel Art** - Retro 8-bit gaming aesthetic
+- 📸 **Photorealistic** - Professional photography quality
+- 🖌️ **Oil Painting** - Classical art with textured brushstrokes
+- 🎨 **Watercolor** - Soft, artistic washes
+- 💻 **Digital Art** - Modern illustration style
+- 🌃 **Cyberpunk** - Neon-lit futuristic aesthetic
+- 🧙 **Fantasy Art** - Magical and ethereal visuals
+- ⬜ **Minimalist** - Clean, simple compositions
+- 🎮 **3D Render** - High-quality CGI style
+- ✨ **Default** - Let the AI decide!
+
+---
+
+## 🔧 Development
+
+### **Available Scripts**
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm run lint         # Run ESLint
+
+# AWS CDK Commands
+cdk deploy --all     # Deploy all stacks
+cdk destroy --all    # Remove all stacks
+cdk synth            # Synthesize CloudFormation template
+cdk diff             # Show changes
+```
+
+### **Environment Variables**
+
+All environment variables should be defined in `.env.local`:
+
+| Variable                          | Description                     | Required    |
+| --------------------------------- | ------------------------------- | ----------- |
+| `AWS_ACCESS_KEY_ID`               | Your AWS access key             | ✅ Yes      |
+| `AWS_SECRET_ACCESS_KEY`           | Your AWS secret key             | ✅ Yes      |
+| `AWS_REGION`                      | AWS region (default: us-east-1) | ✅ Yes      |
+| `S3_BUCKET_NAME`                  | S3 bucket for image storage     | ✅ Yes      |
+| `NEXT_PUBLIC_USER_POOL_ID`        | Cognito User Pool ID            | ✅ Yes      |
+| `NEXT_PUBLIC_USER_POOL_CLIENT_ID` | Cognito App Client ID           | ✅ Yes      |
+| `NEXT_PUBLIC_API_URL`             | API Gateway URL                 | ⚠️ Optional |
+
+---
+
+## 🌟 Why ZiaGen?
+
+### **100% Free**
+
+- No API costs for image generation
+- Unlimited generations with Pollinations.ai
+- Only pay for AWS storage (pennies per month)
+
+### **Professional Quality**
+
+- Multiple artistic styles
+- Customizable dimensions
+- High-quality output
+
+### **Modern Architecture**
+
+- Server-side rendering with Next.js
+- Serverless AWS infrastructure
+- Type-safe TypeScript codebase
+- Responsive design
+
+### **Privacy & Security**
+
+- Secure authentication
+- Private image storage
+- No data sharing
+- Your creations are yours alone
+
+---
+
+## 📸 Screenshots
+
+- **Main Generator**: Beautiful dark UI with gradient accents
+- **Style Selector**: 12+ artistic styles at your fingertips
+- **Gallery View**: Easy browsing and management
+- **Responsive Design**: Perfect on any device
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+- 🐛 Report bugs
+- 💡 Suggest features
+- 🔧 Submit pull requests
+- ⭐ Star the repository
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🎉 Credits
+
+Built with ❤️ using:
+
+- [Next.js](https://nextjs.org/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [AWS Amplify](https://aws.amazon.com/amplify/)
+- [Pollinations.ai](https://pollinations.ai/)
+
+---
+
+**Ready to create amazing images? Get started now! 🚀**

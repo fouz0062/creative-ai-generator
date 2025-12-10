@@ -3,11 +3,24 @@
   "ZiaGenImageBucket630841F2": {
    "Type": "AWS::S3::Bucket",
    "Properties": {
+    "CorsConfiguration": {
+     "CorsRules": [
+      {
+       "AllowedHeaders": [
+        "*"
+       ],
+       "AllowedMethods": [
+        "GET"
+       ],
+       "AllowedOrigins": [
+        "*"
+       ]
+      }
+     ]
+    },
     "PublicAccessBlockConfiguration": {
      "BlockPublicAcls": true,
-     "BlockPublicPolicy": true,
-     "IgnorePublicAcls": true,
-     "RestrictPublicBuckets": true
+     "IgnorePublicAcls": true
     },
     "Tags": [
      {
@@ -30,6 +43,27 @@
     },
     "PolicyDocument": {
      "Statement": [
+      {
+       "Action": "s3:GetObject",
+       "Effect": "Allow",
+       "Principal": {
+        "AWS": "*"
+       },
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::GetAtt": [
+            "ZiaGenImageBucket630841F2",
+            "Arn"
+           ]
+          },
+          "/*"
+         ]
+        ]
+       }
+      },
       {
        "Action": [
         "s3:DeleteObject*",

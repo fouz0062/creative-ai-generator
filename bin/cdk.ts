@@ -34,19 +34,20 @@ const dataStack = new DataStack(app, DATA_STACK_NAME, {
   },
 });
 
-// 2. API Stack (Lambda, API Gateway)
-const apiStack = new ApiStack(app, API_STACK_NAME, {
-  imagesTable: dataStack.imagesTable,
-  imageBucket: dataStack.imageBucket,
+// 2. Cognito Stack (User Auth) - MUST BE DEFINED BEFORE API STACK
+const cognitoStack = new CognitoStack(app, COGNITO_STACK_NAME, {
   env: {
     account: AWS_ACCOUNT_ID,
     region: AWS_REGION,
   },
 });
 
-// 3. Cognito Stack (User Pool)
-const cognitoStack = new CognitoStack(app, COGNITO_STACK_NAME, {
-  api: apiStack.httpApi,
+// 3. API Stack (Lambda, API Gateway) - NOW RECEIVES COGNITO RESOURCES
+const apiStack = new ApiStack(app, API_STACK_NAME, {
+  imagesTable: dataStack.imagesTable,
+  imageBucket: dataStack.imageBucket,
+  userPool: cognitoStack.userPool, // <--- NEW: Pass the UserPool object
+  userPoolClient: cognitoStack.userPoolClient, // <--- NEW: Pass the AppClient object
   env: {
     account: AWS_ACCOUNT_ID,
     region: AWS_REGION,

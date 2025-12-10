@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/219088bf9b36cb65ea2b9b3f7fa6d0b2fe82ebb92cb41e50d792893ff992d0dd.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/3b7587c5a685730092344c92bdc41f643ae78d06ce776cd0aab3d5d34f55e013.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -141,6 +141,96 @@
       },
       "displayName": "ZiaGenDataStack"
     },
+    "ZiaGenCognitoStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "ZiaGenCognitoStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "ZiaGenCognitoStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://686123098700/us-east-1",
+      "properties": {
+        "templateFile": "ZiaGenCognitoStack.template.json",
+        "terminationProtection": false,
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/20af3576e4254178487974aeca25560feda2e3a0e380b717f870491005a37514.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "ZiaGenCognitoStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-us-east-1",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "ZiaGenCognitoStack.assets"
+      ],
+      "metadata": {
+        "/ZiaGenCognitoStack/ZiaGenUserPool/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ZiaGenUserPool18898014"
+          }
+        ],
+        "/ZiaGenCognitoStack/ZiaGenUserPool/ZiaGenAppClient/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ZiaGenUserPoolZiaGenAppClientBCB156E4"
+          }
+        ],
+        "/ZiaGenCognitoStack/UserPoolId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolId"
+          }
+        ],
+        "/ZiaGenCognitoStack/UserPoolClientId": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "UserPoolClientId"
+          }
+        ],
+        "/ZiaGenCognitoStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata"
+          }
+        ],
+        "/ZiaGenCognitoStack/Exports/Output{\"Ref\":\"ZiaGenUserPoolZiaGenAppClientBCB156E4\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefZiaGenUserPoolZiaGenAppClientBCB156E4FA302D10"
+          }
+        ],
+        "/ZiaGenCognitoStack/Exports/Output{\"Ref\":\"ZiaGenUserPool18898014\"}": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ExportsOutputRefZiaGenUserPool188980141C00F5C5"
+          }
+        ],
+        "/ZiaGenCognitoStack/BootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "BootstrapVersion"
+          }
+        ],
+        "/ZiaGenCognitoStack/CheckBootstrapVersion": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CheckBootstrapVersion"
+          }
+        ]
+      },
+      "displayName": "ZiaGenCognitoStack"
+    },
     "ZiaGenApiStack.assets": {
       "type": "cdk:asset-manifest",
       "properties": {
@@ -158,7 +248,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/19fc003388cb749516e822032a59dbb43f892499c6a8b8d7e67c39b1e8adeb27.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/b499e2f1bbe96dac30af32bce4f6f7d261e32cca833ae9b22fb0e2e115424835.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -172,6 +262,7 @@
       },
       "dependencies": [
         "ZiaGenDataStack",
+        "ZiaGenCognitoStack",
         "ZiaGenApiStack.assets"
       ],
       "metadata": {
@@ -223,6 +314,84 @@
             "data": "ImageGenerationApiPOSTgenerateC53FB3C9"
           }
         ],
+        "/ZiaGenApiStack/ImageGenerationApi/UserPoolAuthorizer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiUserPoolAuthorizerC5F0CF07"
+          }
+        ],
+        "/ZiaGenApiStack/ImageGenerationApi/GET--images/ListImagesIntegration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiGETimagesListImagesIntegrationBE8357EA"
+          }
+        ],
+        "/ZiaGenApiStack/ImageGenerationApi/GET--images/ListImagesIntegration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiGETimagesListImagesIntegrationPermission3F045C4C"
+          }
+        ],
+        "/ZiaGenApiStack/ImageGenerationApi/GET--images/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiGETimagesEDD75162"
+          }
+        ],
+        "/ZiaGenApiStack/ImageGenerationApi/DELETE--images--{imageId}/DeleteImageIntegration/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiDELETEimagesimageIdDeleteImageIntegration15FD4061"
+          }
+        ],
+        "/ZiaGenApiStack/ImageGenerationApi/DELETE--images--{imageId}/DeleteImageIntegration-Permission": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiDELETEimagesimageIdDeleteImageIntegrationPermissionC5A1B60B"
+          }
+        ],
+        "/ZiaGenApiStack/ImageGenerationApi/DELETE--images--{imageId}/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ImageGenerationApiDELETEimagesimageId6BA3DAFC"
+          }
+        ],
+        "/ZiaGenApiStack/ListImagesHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListImagesHandlerServiceRole8636F168"
+          }
+        ],
+        "/ZiaGenApiStack/ListImagesHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListImagesHandlerServiceRoleDefaultPolicyFD837FAA"
+          }
+        ],
+        "/ZiaGenApiStack/ListImagesHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "ListImagesHandlerE2C9E6FE"
+          }
+        ],
+        "/ZiaGenApiStack/DeleteImageHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteImageHandlerServiceRoleCD024EA3"
+          }
+        ],
+        "/ZiaGenApiStack/DeleteImageHandler/ServiceRole/DefaultPolicy/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteImageHandlerServiceRoleDefaultPolicy993EDB43"
+          }
+        ],
+        "/ZiaGenApiStack/DeleteImageHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "DeleteImageHandlerD5538914"
+          }
+        ],
         "/ZiaGenApiStack/ApiUrl": [
           {
             "type": "aws:cdk:logicalId",
@@ -249,84 +418,6 @@
         ]
       },
       "displayName": "ZiaGenApiStack"
-    },
-    "ZiaGenCognitoStack.assets": {
-      "type": "cdk:asset-manifest",
-      "properties": {
-        "file": "ZiaGenCognitoStack.assets.json",
-        "requiresBootstrapStackVersion": 6,
-        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
-      }
-    },
-    "ZiaGenCognitoStack": {
-      "type": "aws:cloudformation:stack",
-      "environment": "aws://686123098700/us-east-1",
-      "properties": {
-        "templateFile": "ZiaGenCognitoStack.template.json",
-        "terminationProtection": false,
-        "validateOnSynth": false,
-        "assumeRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-deploy-role-686123098700-us-east-1",
-        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-cfn-exec-role-686123098700-us-east-1",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-686123098700-us-east-1/b3fb6dc6c141108692a632a490bb6f8d5400887ad392312026159b59d0e299d4.json",
-        "requiresBootstrapStackVersion": 6,
-        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
-        "additionalDependencies": [
-          "ZiaGenCognitoStack.assets"
-        ],
-        "lookupRole": {
-          "arn": "arn:${AWS::Partition}:iam::686123098700:role/cdk-hnb659fds-lookup-role-686123098700-us-east-1",
-          "requiresBootstrapStackVersion": 8,
-          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
-        }
-      },
-      "dependencies": [
-        "ZiaGenCognitoStack.assets"
-      ],
-      "metadata": {
-        "/ZiaGenCognitoStack/ZiaGenUserPool/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ZiaGenUserPool18898014"
-          }
-        ],
-        "/ZiaGenCognitoStack/ZiaGenUserPool/ZiaGenAppClient/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "ZiaGenUserPoolZiaGenAppClientBCB156E4"
-          }
-        ],
-        "/ZiaGenCognitoStack/UserPoolId": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "UserPoolId"
-          }
-        ],
-        "/ZiaGenCognitoStack/UserPoolClientId": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "UserPoolClientId"
-          }
-        ],
-        "/ZiaGenCognitoStack/CDKMetadata/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CDKMetadata"
-          }
-        ],
-        "/ZiaGenCognitoStack/BootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "BootstrapVersion"
-          }
-        ],
-        "/ZiaGenCognitoStack/CheckBootstrapVersion": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CheckBootstrapVersion"
-          }
-        ]
-      },
-      "displayName": "ZiaGenCognitoStack"
     },
     "Tree": {
       "type": "cdk:tree",

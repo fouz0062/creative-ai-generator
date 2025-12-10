@@ -104,7 +104,7 @@
    "Properties": {
     "Code": {
      "S3Bucket": "cdk-hnb659fds-assets-686123098700-us-east-1",
-     "S3Key": "c8ea8df84f530dc25456efbb6f4a8e126efda2e4f5ed85040728eea88ca44b5a.zip"
+     "S3Key": "302fa980644ed498891a32ec97ec5a97b6f503f6db270bae4600c40270b7f82a.zip"
     },
     "Environment": {
      "Variables": {
@@ -133,7 +133,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "ZiaGenApiStack/GenerateImageHandler/Resource",
-    "aws:asset:path": "asset.c8ea8df84f530dc25456efbb6f4a8e126efda2e4f5ed85040728eea88ca44b5a",
+    "aws:asset:path": "asset.302fa980644ed498891a32ec97ec5a97b6f503f6db270bae4600c40270b7f82a",
     "aws:asset:is-bundled": false,
     "aws:asset:property": "Code"
    }
@@ -231,7 +231,10 @@
     "ApiId": {
      "Ref": "ImageGenerationApi809B35D9"
     },
-    "AuthorizationType": "NONE",
+    "AuthorizationType": "JWT",
+    "AuthorizerId": {
+     "Ref": "ImageGenerationApiUserPoolAuthorizerC5F0CF07"
+    },
     "RouteKey": "POST /generate",
     "Target": {
      "Fn::Join": [
@@ -249,10 +252,432 @@
     "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/POST--generate/Resource"
    }
   },
+  "ImageGenerationApiUserPoolAuthorizerC5F0CF07": {
+   "Type": "AWS::ApiGatewayV2::Authorizer",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ImageGenerationApi809B35D9"
+    },
+    "AuthorizerType": "JWT",
+    "IdentitySource": [
+     "$request.header.Authorization"
+    ],
+    "JwtConfiguration": {
+     "Audience": [
+      {
+       "Fn::ImportValue": "ZiaGenCognitoStack:ExportsOutputRefZiaGenUserPoolZiaGenAppClientBCB156E4FA302D10"
+      }
+     ],
+     "Issuer": {
+      "Fn::Join": [
+       "",
+       [
+        "https://cognito-idp.us-east-1.amazonaws.com/",
+        {
+         "Fn::ImportValue": "ZiaGenCognitoStack:ExportsOutputRefZiaGenUserPool188980141C00F5C5"
+        }
+       ]
+      ]
+     }
+    },
+    "Name": "UserPoolAuthorizer"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/UserPoolAuthorizer/Resource"
+   }
+  },
+  "ImageGenerationApiGETimagesListImagesIntegrationBE8357EA": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ImageGenerationApi809B35D9"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "ListImagesHandlerE2C9E6FE",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/GET--images/ListImagesIntegration/Resource"
+   }
+  },
+  "ImageGenerationApiGETimagesListImagesIntegrationPermission3F045C4C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "ListImagesHandlerE2C9E6FE",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:686123098700:",
+       {
+        "Ref": "ImageGenerationApi809B35D9"
+       },
+       "/*/*/images"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/GET--images/ListImagesIntegration-Permission"
+   }
+  },
+  "ImageGenerationApiGETimagesEDD75162": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ImageGenerationApi809B35D9"
+    },
+    "AuthorizationType": "JWT",
+    "AuthorizerId": {
+     "Ref": "ImageGenerationApiUserPoolAuthorizerC5F0CF07"
+    },
+    "RouteKey": "GET /images",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ImageGenerationApiGETimagesListImagesIntegrationBE8357EA"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/GET--images/Resource"
+   }
+  },
+  "ImageGenerationApiDELETEimagesimageIdDeleteImageIntegration15FD4061": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ImageGenerationApi809B35D9"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "DeleteImageHandlerD5538914",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/DELETE--images--{imageId}/DeleteImageIntegration/Resource"
+   }
+  },
+  "ImageGenerationApiDELETEimagesimageIdDeleteImageIntegrationPermissionC5A1B60B": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "DeleteImageHandlerD5538914",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:us-east-1:686123098700:",
+       {
+        "Ref": "ImageGenerationApi809B35D9"
+       },
+       "/*/*/images/{imageId}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/DELETE--images--{imageId}/DeleteImageIntegration-Permission"
+   }
+  },
+  "ImageGenerationApiDELETEimagesimageId6BA3DAFC": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "ImageGenerationApi809B35D9"
+    },
+    "AuthorizationType": "JWT",
+    "AuthorizerId": {
+     "Ref": "ImageGenerationApiUserPoolAuthorizerC5F0CF07"
+    },
+    "RouteKey": "DELETE /images/{imageId}",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "ImageGenerationApiDELETEimagesimageIdDeleteImageIntegration15FD4061"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ImageGenerationApi/DELETE--images--{imageId}/Resource"
+   }
+  },
+  "ListImagesHandlerServiceRole8636F168": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ListImagesHandler/ServiceRole/Resource"
+   }
+  },
+  "ListImagesHandlerServiceRoleDefaultPolicyFD837FAA": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "ZiaGenDataStack:ExportsOutputFnGetAttZiaGenImagesTable10279342Arn8B9AAC52"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "ListImagesHandlerServiceRoleDefaultPolicyFD837FAA",
+    "Roles": [
+     {
+      "Ref": "ListImagesHandlerServiceRole8636F168"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ListImagesHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "ListImagesHandlerE2C9E6FE": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-686123098700-us-east-1",
+     "S3Key": "af197e6b09fdb1fd991052a007b9a576743bf8872276b43b4ec0a28248e18bb2.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "DYNAMODB_TABLE_NAME": {
+       "Fn::ImportValue": "ZiaGenDataStack:ExportsOutputRefZiaGenImagesTable10279342BEC091D7"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "ListImagesHandlerServiceRole8636F168",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "ListImagesHandlerServiceRoleDefaultPolicyFD837FAA",
+    "ListImagesHandlerServiceRole8636F168"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/ListImagesHandler/Resource",
+    "aws:asset:path": "asset.af197e6b09fdb1fd991052a007b9a576743bf8872276b43b4ec0a28248e18bb2",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
+  "DeleteImageHandlerServiceRoleCD024EA3": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/DeleteImageHandler/ServiceRole/Resource"
+   }
+  },
+  "DeleteImageHandlerServiceRoleDefaultPolicy993EDB43": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable",
+        "dynamodb:GetItem",
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator",
+        "dynamodb:PutItem",
+        "dynamodb:Query",
+        "dynamodb:Scan",
+        "dynamodb:UpdateItem"
+       ],
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::ImportValue": "ZiaGenDataStack:ExportsOutputFnGetAttZiaGenImagesTable10279342Arn8B9AAC52"
+       }
+      },
+      {
+       "Action": "s3:DeleteObject*",
+       "Effect": "Allow",
+       "Resource": {
+        "Fn::Join": [
+         "",
+         [
+          {
+           "Fn::ImportValue": "ZiaGenDataStack:ExportsOutputFnGetAttZiaGenImageBucket630841F2ArnA77A973C"
+          },
+          "/*"
+         ]
+        ]
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "DeleteImageHandlerServiceRoleDefaultPolicy993EDB43",
+    "Roles": [
+     {
+      "Ref": "DeleteImageHandlerServiceRoleCD024EA3"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/DeleteImageHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "DeleteImageHandlerD5538914": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Code": {
+     "S3Bucket": "cdk-hnb659fds-assets-686123098700-us-east-1",
+     "S3Key": "9fb5e257c114e84591b208c98843b49052ac5c166fec1d41754ce4329f7e2855.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "DYNAMODB_TABLE_NAME": {
+       "Fn::ImportValue": "ZiaGenDataStack:ExportsOutputRefZiaGenImagesTable10279342BEC091D7"
+      },
+      "S3_BUCKET_NAME": {
+       "Fn::ImportValue": "ZiaGenDataStack:ExportsOutputRefZiaGenImageBucket630841F2A6EEFDEF"
+      }
+     }
+    },
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "DeleteImageHandlerServiceRoleCD024EA3",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "DeleteImageHandlerServiceRoleDefaultPolicy993EDB43",
+    "DeleteImageHandlerServiceRoleCD024EA3"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "ZiaGenApiStack/DeleteImageHandler/Resource",
+    "aws:asset:path": "asset.9fb5e257c114e84591b208c98843b49052ac5c166fec1d41754ce4329f7e2855",
+    "aws:asset:is-bundled": false,
+    "aws:asset:property": "Code"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02Py27CMBBFvyV7Z8ijm+4KSFW7KgofgIZg0iGJHWXGRMjyv1c2VMrqXGnuzLEr8FVdQJHhwnl76fOBzuCPgm2vcOGTH3A8XxD8pzOtkDVqfzXrfNDzSMxkTVCEI/jGDjoOEg92oPaReikFxfUJmbUwbCMU17Bzba9lh6wVTtSh6AUf9wr8/mq2E8Xto2CXrn4b0d2M//bGOtEhqEazdXOrVToa22S6WPhxMjkJqizfoMxxmH4Riuzj9dtN5Nr5avgvkSmqI5/umJItpdUzQlDGXjTceHOvKijfochuTJTPzgiNGpon/wClObpragEAAA=="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02PzW7CMBCEn4W7s+Snl94akKr2VBQeAC2JCUsSO8quiaiVd69sqJTTN1rP7oxz8HmRQrrBmZO66ZKezuCPgnWncOaT73E4Nwj+05layBq1v5i1PuhpIGayZlGEA/jK9jo8RB5sT/Uj+qJaFBcnZNbCUAYoLmDn6k7LDlkrHKlF0TM+7jn4/cWUI4Xto2Abr34b0e2E/+mVdRLnpZOrnehXT8uiKs3WTbVWMSLskmmD68fJ6GRRWfYGWYL9eEVINx+vv28D1w1eDv8lMoYigc8mQT2zg1qXit51GWMbDTfe3vMcsndINzcmSiZnhAYN1ZN/bCD4AocBAAA="
    },
    "Metadata": {
     "aws:cdk:path": "ZiaGenApiStack/CDKMetadata/Default"

@@ -103,6 +103,22 @@
    "Value": {
     "Ref": "ZiaGenUserPoolZiaGenAppClientBCB156E4"
    }
+  },
+  "ExportsOutputRefZiaGenUserPoolZiaGenAppClientBCB156E4FA302D10": {
+   "Value": {
+    "Ref": "ZiaGenUserPoolZiaGenAppClientBCB156E4"
+   },
+   "Export": {
+    "Name": "ZiaGenCognitoStack:ExportsOutputRefZiaGenUserPoolZiaGenAppClientBCB156E4FA302D10"
+   }
+  },
+  "ExportsOutputRefZiaGenUserPool188980141C00F5C5": {
+   "Value": {
+    "Ref": "ZiaGenUserPool18898014"
+   },
+   "Export": {
+    "Name": "ZiaGenCognitoStack:ExportsOutputRefZiaGenUserPool188980141C00F5C5"
+   }
   }
  },
  "Parameters": {

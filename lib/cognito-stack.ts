@@ -2,19 +2,12 @@
 import * as cdk from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import { Construct } from 'constructs';
-import { HttpApi } from '@aws-cdk/aws-apigatewayv2-alpha';
-
-// Define the properties for your CognitoStack
-export interface CognitoStackProps extends cdk.StackProps {
-  api: HttpApi; // Required: Expects an HttpApi object
-}
 
 export class CognitoStack extends cdk.Stack {
   public readonly userPool: cognito.UserPool;
   public readonly userPoolClient: cognito.UserPoolClient;
 
-  // CHANGED: props is now required (removed '?')
-  constructor(scope: Construct, id: string, props: CognitoStackProps) { 
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) { 
     super(scope, id, props);
 
     // 1. Define the Cognito User Pool

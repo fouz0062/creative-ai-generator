@@ -43,7 +43,15 @@ exports.handler = async (event) => {
 
     console.log(`Received prompt: "${prompt}"`);
 
-    // 2. Invoke Bedrock model (Amazon Titan Image Generator)
+    // NEW: 2. Get the authenticated User ID from the Cognito Authorizer context
+    // This path is for HTTP API Gateway with a Cognito Authorizer
+    let userId = "anonymous";
+    if (event.requestContext?.authorizer?.jwt?.claims?.sub) {
+      userId = event.requestContext.authorizer.jwt.claims.sub;
+    }
+    console.log(`Processing request for User ID: ${userId}`);
+
+    // 3. Invoke Bedrock model (Amazon Titan Image Generator)
     const bedrockRequestBody = {
       taskType: "TEXT_IMAGE",
       textToImageParams: {
@@ -106,10 +114,12 @@ exports.handler = async (event) => {
       })
     );
 
+    // Generate direct S3 URL (bucket is public)
     const imageUrl = `https://${IMAGE_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${s3Key}`;
+
     console.log(`Image uploaded to S3: ${imageUrl}`);
 
-    // 4. Store image metadata in DynamoDB
+    // 4. Store metadata in DynamoDB
     if (!IMAGES_TABLE_NAME) {
       throw new Error("IMAGES_TABLE_NAME environment variable not set.");
     }
@@ -118,17 +128,20 @@ exports.handler = async (event) => {
       new PutItemCommand({
         TableName: IMAGES_TABLE_NAME,
         Item: {
-          userId: { S: "anonymous" }, // Partition key (will use Cognito user ID later)
+          userId: { S: userId }, // <--- UPDATED to use authenticated ID
           timestamp: { S: timestamp }, // Sort key
           imageId: { S: imageId },
           prompt: { S: prompt },
-          imageUrl: { S: imageUrl },
+          imageUrl: { S: imageUrl }, // Store direct URL
+          s3Key: { S: s3Key }, // Store S3 key for future reference
         },
       })
     );
-    console.log(`Metadata stored in DynamoDB for image ID: ${imageId}`);
+    console.log(
+      `Metadata stored in DynamoDB for image ID: ${imageId} by user: ${userId}`
+    );
 
-    // 5. Return success response
+    // 5. Return success response with direct URL
     return {
       statusCode: 200,
       headers: {
@@ -141,7 +154,7 @@ exports.handler = async (event) => {
       body: JSON.stringify({
         message: "Image generated and saved successfully!",
         imageId: imageId,
-        imageUrl: imageUrl,
+        imageUrl: imageUrl, // Return direct URL that browser can access
       }),
     };
   } catch (error) {

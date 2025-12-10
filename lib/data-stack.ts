@@ -15,8 +15,15 @@ export class DataStack extends cdk.Stack {
     this.imageBucket = new s3.Bucket(this, 'ZiaGenImageBucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY, // NOTE: Use RETAIN for production!
       autoDeleteObjects: true,
-      publicReadAccess: false, // Keep it private
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
+      publicReadAccess: true, // Make images publicly accessible
+      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ACLS, // Allow public access via bucket policy
+      cors: [
+        {
+          allowedMethods: [s3.HttpMethods.GET],
+          allowedOrigins: ['*'],
+          allowedHeaders: ['*'],
+        },
+      ],
     });
 
     // 2. Define DynamoDB Table for Image Metadata

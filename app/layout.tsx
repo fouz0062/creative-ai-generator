@@ -1,14 +1,19 @@
-// app/layout.tsx
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { AuthProvider } from "@/context/AuthContext";
-import { Amplify } from "aws-amplify";
+import AmplifyConfigProvider from "@/components/AmplifyConfigProvider";
 
 const inter = Inter({ subsets: ["latin"] });
-Amplify.configure(exports);
+
 export const metadata = {
   title: "Creative AI Generator",
   description: "Generate images with AI",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -17,13 +22,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={inter.className}>
-        <AuthProvider>
-          {" "}
-          {/* Wrap your app with AuthProvider */}
-          {children}
-        </AuthProvider>
+        <AmplifyConfigProvider>
+          <AuthProvider>{children}</AuthProvider>
+        </AmplifyConfigProvider>
       </body>
     </html>
   );

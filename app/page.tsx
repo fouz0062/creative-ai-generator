@@ -1,32 +1,52 @@
-// app/page.tsx
-"use client"; // This page needs client-side state now
+"use client";
 
 import { useState } from "react";
 import Layout from "@/components/Layout";
 import MainGeneratorPanel from "@/components/MainGeneratorPanel";
 import GallerySidebar from "@/components/GallerySidebar";
 
-interface ImageMetadata {
-  id: string;
+interface SelectedImage {
+  imageId: string;
   prompt: string;
-  s3_url: string;
+  imageUrl: string;
   timestamp: string;
+  s3Key: string;
 }
 
 export default function Home() {
-  const [selectedImage, setSelectedImage] = useState<ImageMetadata | null>(
+  const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(
     null
   );
+  const [refreshKey, setRefreshKey] = useState(0);
 
-  // Function passed to sidebar to update main panel
-  const handleSelectImage = (image: ImageMetadata) => {
+  const handleSelectImage = (image: SelectedImage) => {
     setSelectedImage(image);
+  };
+
+  const handleImageGenerated = () => {
+    // Refresh gallery when new image is generated
+    setRefreshKey((prev) => prev + 1);
+    // Trigger gallery refresh
+    if ((window as any).refreshGallery) {
+      (window as any).refreshGallery();
+    }
   };
 
   return (
     <Layout
-      sidebarContent={<GallerySidebar onSelectImage={handleSelectImage} />}
-      mainContent={<MainGeneratorPanel selectedImage={selectedImage} />} // Pass selected image to main panel
+      sidebarContent={
+        <GallerySidebar
+          key={refreshKey}
+          onSelectImage={handleSelectImage}
+          onRefresh={handleImageGenerated}
+        />
+      }
+      mainContent={
+        <MainGeneratorPanel
+          selectedImage={selectedImage}
+          onImageGenerated={handleImageGenerated}
+        />
+      }
     />
   );
 }
