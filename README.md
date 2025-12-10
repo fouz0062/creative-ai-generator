@@ -94,9 +94,9 @@ cdk deploy ZiaGenDataStack ZiaGenCognitoStack
 
 **What This Means:**
 
-- Your **frontend** and **API routes** run on **Vercel** (free, fast, optimized)
-- Your **authentication** and **storage** run on **AWS** (managed via CDK)
-- This hybrid approach gives you the best of both worlds!
+- **frontend** and **API routes** run on **Vercel** (free, fast, optimized)
+- **authentication** and **storage** run on **AWS** (managed via CDK)
+- This hybrid approach gives the best for both worlds!
 
 ---
 
