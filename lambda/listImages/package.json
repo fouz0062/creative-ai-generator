@@ -1,0 +1,11 @@
+{
+  "name": "list-images-lambda",
+  "version": "1.0.0",
+  "description": "Lambda function to list images from S3",
+  "type": "module",
+  "main": "index.mjs",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0"
+  }
+}
+
