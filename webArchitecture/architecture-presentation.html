@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZiaGen Architecture - Presentation</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 3em;
+        margin-bottom: 10px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .subtitle {
+        text-align: center;
+        font-size: 1.2em;
+        margin-bottom: 40px;
+        opacity: 0.9;
+      }
+
+      .diagram-section {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        margin-bottom: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .diagram-section h2 {
+        color: #4338ca;
+        margin-bottom: 20px;
+        font-size: 2em;
+        border-bottom: 3px solid #8b5cf6;
+        padding-bottom: 10px;
+      }
+
+      .mermaid {
+        background: #f8fafc;
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 10px;
+        font-size: 1.5em;
+      }
+
+      .tech-stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 20px 0;
+      }
+
+      .tech-badge {
+        background: linear-gradient(135deg, #4338ca, #8b5cf6);
+        padding: 10px 20px;
+        border-radius: 25px;
+        font-weight: bold;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+        color: #1e293b;
+      }
+
+      th {
+        background: linear-gradient(135deg, #4338ca, #8b5cf6);
+        color: white;
+        font-weight: bold;
+      }
+
+      .highlight-box {
+        background: linear-gradient(135deg, #10b981, #059669);
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px 0;
+        border-left: 5px solid #047857;
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+        .diagram-section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎨 ZiaGen Architecture</h1>
+      <p class="subtitle">
+        Creative AI Image Generator - System Design & Data Flow
+      </p>
+
+      <!-- System Overview -->
+      <div class="diagram-section">
+        <h2>🏗️ System Architecture Overview</h2>
+        <div class="mermaid">
+          graph TB subgraph "Client Layer" A[Web Browser] A1[Mobile Device] end
+          subgraph "Frontend - Next.js 16" B[Next.js App] B1[MainGeneratorPanel]
+          B2[GallerySidebar] B3[AuthPlaceholder] end subgraph "API Routes"
+          C1[/api/generate-hf] C2[/api/list-images] C3[/api/delete-image] end
+          subgraph "AWS Services" D1[Amazon Cognito] D2[Amazon S3] end subgraph
+          "External APIs" E1[Pollinations.ai] end A --> B A1 --> B B --> B1 B
+          --> B2 B --> B3 B1 --> C1 B2 --> C2 B2 --> C3 B3 --> D1 C1 --> E1 C1
+          --> D2 C2 --> D2 C3 --> D2 style A
+          fill:#4338ca,stroke:#333,stroke-width:2px,color:#fff style A1
+          fill:#4338ca,stroke:#333,stroke-width:2px,color:#fff style B
+          fill:#8b5cf6,stroke:#333,stroke-width:2px,color:#fff style E1
+          fill:#10b981,stroke:#333,stroke-width:2px,color:#fff
+        </div>
+      </div>
+
+      <!-- Data Flow -->
+      <div class="diagram-section">
+        <h2>📊 Image Generation Data Flow</h2>
+        <div class="mermaid">
+          sequenceDiagram participant U as 👤 User participant UI as Next.js UI
+          participant Auth as AWS Cognito participant API as API Routes
+          participant AI as Pollinations.ai participant S3 as Amazon S3 Note
+          over U,S3: Authentication U->>UI: Sign In UI->>Auth: Authenticate
+          Auth-->>UI: JWT Token Note over U,S3: Image Generation U->>UI: Enter
+          Prompt + Style UI->>API: POST /api/generate-hf API->>AI: Generate
+          Image AI-->>API: Return PNG API->>S3: Upload with Metadata S3-->>API:
+          S3 URL API-->>UI: Image URL UI-->>U: Display Image
+        </div>
+      </div>
+
+      <!-- Tech Stack -->
+      <div class="diagram-section">
+        <h2>💻 Technology Stack</h2>
+        <div class="tech-stack">
+          <span class="tech-badge">⚛️ Next.js 16</span>
+          <span class="tech-badge">📘 TypeScript</span>
+          <span class="tech-badge">🎨 Tailwind CSS</span>
+          <span class="tech-badge">🔐 AWS Cognito</span>
+          <span class="tech-badge">☁️ Amazon S3</span>
+          <span class="tech-badge">🤖 Pollinations.ai</span>
+          <span class="tech-badge">🚀 Vercel</span>
+        </div>
+      </div>
+
+      <!-- Key Features -->
+      <div class="diagram-section">
+        <h2>✨ Key Features</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3>🎨 12+ Art Styles</h3>
+            <p>
+              Studio Ghibli, Realistic, Pixel Art, Cyberpunk, Oil Painting,
+              Watercolor, and more!
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>📐 8 Dimension Options</h3>
+            <p>Square, Portrait, Landscape formats from 512px to 1024px</p>
+          </div>
+          <div class="feature-card">
+            <h3>🖼️ Image Gallery</h3>
+            <p>View, regenerate, and delete your creations</p>
+          </div>
+          <div class="feature-card">
+            <h3>🔐 Secure Auth</h3>
+            <p>AWS Cognito with email verification</p>
+          </div>
+          <div class="feature-card">
+            <h3>☁️ Cloud Storage</h3>
+            <p>Persistent S3 storage with metadata</p>
+          </div>
+          <div class="feature-card">
+            <h3>💰 100% Free AI</h3>
+            <p>Unlimited generations with Pollinations.ai</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost Analysis -->
+      <div class="diagram-section">
+        <h2>💰 Cost Breakdown</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Usage</th>
+              <th>Monthly Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Pollinations.ai</strong></td>
+              <td>Unlimited image generation</td>
+              <td style="color: #10b981; font-weight: bold">$0.00 (FREE!)</td>
+            </tr>
+            <tr>
+              <td><strong>Vercel Hosting</strong></td>
+              <td>100GB bandwidth/month</td>
+              <td style="color: #10b981; font-weight: bold">$0.00 (FREE!)</td>
+            </tr>
+            <tr>
+              <td><strong>AWS Cognito</strong></td>
+              <td>Up to 50,000 MAU</td>
+              <td style="color: #10b981; font-weight: bold">$0.00 (FREE!)</td>
+            </tr>
+            <tr>
+              <td><strong>AWS S3</strong></td>
+              <td>Storage + requests</td>
+              <td>~$0.01-$1.00</td>
+            </tr>
+            <tr style="background: #f0fdf4">
+              <td
+                colspan="2"
+                style="text-align: right; font-weight: bold; font-size: 1.2em"
+              >
+                Total:
+              </td>
+              <td style="color: #10b981; font-weight: bold; font-size: 1.2em">
+                ~$0.01-$2.00
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Highlights -->
+      <div class="diagram-section">
+        <div class="highlight-box">
+          <h2
+            style="color: white; border: none; padding: 0; margin-bottom: 15px"
+          >
+            🎯 Why This Architecture?
+          </h2>
+          <ul style="list-style: none; line-height: 2">
+            <li>
+              ✅ <strong>Scalable:</strong> Handles thousands of concurrent
+              users
+            </li>
+            <li>
+              ✅ <strong>Cost-Effective:</strong> Nearly free to run
+              (~$1-2/month)
+            </li>
+            <li>✅ <strong>Secure:</strong> Enterprise-grade authentication</li>
+            <li>✅ <strong>Fast:</strong> Global CDN, optimized loading</li>
+            <li>
+              ✅ <strong>Reliable:</strong> 99.99% uptime with AWS services
+            </li>
+            <li>
+              ✅ <strong>Modern:</strong> Latest Next.js, TypeScript, Tailwind
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      mermaid.initialize({
+        startOnLoad: true,
+        theme: "default",
+        themeVariables: {
+          primaryColor: "#8b5cf6",
+          primaryTextColor: "#fff",
+          primaryBorderColor: "#4338ca",
+          lineColor: "#6366f1",
+          secondaryColor: "#10b981",
+          tertiaryColor: "#f59e0b",
+        },
+      });
+    </script>
+  </body>
+</html>
