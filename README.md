@@ -20,6 +20,7 @@ ZiaGen is a modern, fully-featured AI image generation platform that brings your
 - **Fully Responsive**: Perfect experience on desktop, tablet, and mobile devices
 - **Image Gallery**: Browse all your creations with thumbnails and quick selection
 - **Easy Management**: Delete unwanted images with a single click
+- **Download Feature**: Download any generated image with one click
 
 ### 🔐 **Secure Authentication**
 
@@ -48,9 +49,10 @@ ZiaGen is a modern, fully-featured AI image generation platform that brings your
 
 ### **Backend & Infrastructure**
 
-- ☁️ **AWS S3** - Cloud image storage
-- 🔐 **AWS Cognito** - User authentication
-- 🏗️ **AWS CDK** - Infrastructure as Code
+- 🚀 **Vercel Serverless** - API routes hosting (Next.js API routes)
+- ☁️ **AWS S3** - Cloud image storage (managed via CDK)
+- 🔐 **AWS Cognito** - User authentication (managed via CDK)
+- 🏗️ **AWS CDK** - Infrastructure as Code (manages S3 & Cognito)
 - 🎨 **Pollinations.ai** - Free AI image generation
 - 📦 **AWS SDK** - S3 operations
 
@@ -60,37 +62,75 @@ ZiaGen is a modern, fully-featured AI image generation platform that brings your
 - 🎭 **12+ Art Styles** - From anime to photorealistic
 - 📐 **8 Dimension Presets** - Flexible image sizing
 
+### **⚡ Serverless Architecture**
+
+**AWS Services Used (Managed via CDK):**
+
+1. ✅ **AWS Cognito** - User authentication (sign up, sign in, email verification)
+2. ✅ **Amazon S3** - Image storage bucket (stores all generated images)
+
+**AWS Services NOT Used:**
+
+- ❌ **API Gateway** - Not needed (using Vercel for APIs)
+- ❌ **AWS Lambda** - Not needed (using Vercel Serverless Functions)
+
+**Why Vercel Instead of AWS Lambda + API Gateway?**
+
+Your Next.js API routes (in `app/api/`) run on **Vercel's edge network** instead of AWS Lambda:
+
+- 🚀 **Optimized for Next.js**: Zero configuration, instant deployments
+- 💰 **Cost-Effective**: Generous free tier with no hidden costs
+- ⚡ **No Cold Starts**: Instant response times (Lambda has cold starts)
+- 🌍 **Global CDN**: Edge functions deployed worldwide automatically
+- 🔄 **Auto Deploy**: Push to Git = automatic deployment
+- 📊 **Built-in Analytics**: Monitor performance and errors
+
+**Deploy Your AWS Infrastructure:**
+
+```bash
+# Deploy S3 and Cognito via CDK (API Gateway/Lambda not needed)
+cdk deploy ZiaGenDataStack ZiaGenCognitoStack
+```
+
+**What This Means:**
+
+- Your **frontend** and **API routes** run on **Vercel** (free, fast, optimized)
+- Your **authentication** and **storage** run on **AWS** (managed via CDK)
+- This hybrid approach gives you the best of both worlds!
+
 ---
 
 ## 📂 Project Structure
 
 ```
 creative-ai-generator/
-├── app/                      # Next.js App Router
-│   ├── api/                  # API routes
-│   │   ├── generate-hf/      # Image generation endpoint
-│   │   ├── list-images/      # Gallery listing endpoint
-│   │   └── delete-image/     # Image deletion endpoint
-│   ├── layout.tsx            # Root layout with providers
-│   ├── page.tsx              # Main application page
-│   └── globals.css           # Global styles
-├── components/               # React components
+├── app/                         # Next.js App Router
+│   ├── api/                     # ✅ Vercel Serverless API Routes
+│   │   ├── generate-hf/         # Image generation endpoint
+│   │   ├── list-images/         # Gallery listing endpoint
+│   │   └── delete-image/        # Image deletion endpoint
+│   ├── layout.tsx               # Root layout with providers
+│   ├── page.tsx                 # Main application page
+│   └── globals.css              # Global styles
+├── components/                  # React components
 │   ├── MainGeneratorPanel.tsx   # Image generation UI
 │   ├── GallerySidebar.tsx       # Image gallery & navigation
 │   ├── AuthPlaceholder.tsx      # Authentication forms
 │   ├── Layout.tsx               # App layout wrapper
 │   └── AmplifyConfigProvider.tsx # AWS Amplify setup
-├── context/                  # React Context
-│   └── AuthContext.tsx       # Authentication state
-├── lib/                      # AWS CDK stacks
-│   ├── amplify-config.ts     # Amplify configuration
-│   ├── data-stack.ts         # S3 & DynamoDB stack
-│   ├── api-stack.ts          # API Gateway & Lambda
-│   └── cognito-stack.ts      # User authentication
-└── lambda/                   # Lambda functions
-    ├── generateImage/        # Image generation handler
-    ├── listImages/           # List user images
-    └── deleteImage/          # Delete image handler
+├── context/                     # React Context
+│   └── AuthContext.tsx          # Authentication state
+├── lib/                         # AWS CDK Infrastructure (IaC)
+│   ├── amplify-config.ts        # Amplify configuration
+│   ├── data-stack.ts            # ✅ S3 & DynamoDB stack (deployed)
+│   ├── cognito-stack.ts         # ✅ User authentication (deployed)
+│   └── api-stack.ts             # ⚠️ API Gateway & Lambda (not deployed)
+├── bin/                         # CDK app entry point
+│   └── cdk.ts                   # CDK application
+└── webArchitecture/             # Architecture documentation
+    ├── architecture-diagram.html # Interactive diagram
+    ├── ARCHITECTURE.md           # Detailed markdown docs
+    └── ARCHITECTURE-SIMPLE.txt   # Simple text diagram
 ```
 
 ---

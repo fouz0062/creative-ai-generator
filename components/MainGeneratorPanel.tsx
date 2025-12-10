@@ -40,6 +40,29 @@ export default function MainGeneratorPanel({
   const [imageDimensions, setImageDimensions] = useState("1024x1024");
   const [currentS3Key, setCurrentS3Key] = useState<string | null>(null);
 
+  // Download image function
+  const handleDownloadImage = async () => {
+    if (!currentImage?.imageUrl) return;
+
+    try {
+      const response = await fetch(currentImage.imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `ziagen-${prompt
+        .substring(0, 30)
+        .replace(/[^a-z0-9]/gi, "-")}-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error downloading image:", error);
+      alert("Failed to download image. Please try again.");
+    }
+  };
+
   // Update prompt and image when a gallery image is selected
   React.useEffect(() => {
     if (selectedImage) {
@@ -299,13 +322,36 @@ export default function MainGeneratorPanel({
             </span>
           </div>
         ) : currentImage?.imageUrl ? (
-          <Image
-            src={currentImage.imageUrl}
-            alt={`Generated image for: ${prompt}`}
-            fill
-            className="object-contain rounded-md shadow-2xl"
-            sizes="100vw"
-          />
+          <>
+            <Image
+              src={currentImage.imageUrl}
+              alt={`Generated image for: ${prompt}`}
+              fill
+              className="object-contain rounded-md shadow-2xl"
+              sizes="100vw"
+            />
+            {/* Download Button */}
+            <button
+              onClick={handleDownloadImage}
+              className="absolute top-4 right-4 bg-green-600 hover:bg-green-700 active:bg-green-800 text-white p-3 rounded-full shadow-lg transition-all duration-200 z-10 cursor-pointer group"
+              title="Download Image"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                />
+              </svg>
+            </button>
+          </>
         ) : (
           <p className="text-gray-500 text-sm sm:text-base text-center px-4">
             Your generated image will appear here.

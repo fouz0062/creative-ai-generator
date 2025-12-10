@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🎨 ZiaGen Architecture Diagram</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        background: #1a1d2e;
+        color: #e2e8f0;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 30px 20px;
+      }
+
+      .header h1 {
+        font-size: clamp(1.8em, 4vw, 3em);
+        margin-bottom: 10px;
+        color: #fff;
+      }
+
+      .header p {
+        font-size: clamp(0.9em, 2vw, 1.2em);
+        color: #94a3b8;
+      }
+
+      .section {
+        margin-bottom: 40px;
+        background: #252a3d;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .section-title {
+        font-size: clamp(1.2em, 2.5vw, 1.6em);
+        color: #fff;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #3b4252;
+      }
+
+      /* Client Layer */
+      .client-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .client-box {
+        background: #374151;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 0.9em;
+        transition: transform 0.2s;
+      }
+
+      .client-box:hover {
+        transform: translateY(-3px);
+        background: #4b5563;
+      }
+
+      /* Frontend Components */
+      .frontend-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .frontend-box {
+        background: linear-gradient(135deg, #10b981, #059669);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        transition: transform 0.2s;
+      }
+
+      .frontend-box:hover {
+        transform: scale(1.05);
+      }
+
+      .frontend-box.orange {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      }
+
+      .frontend-box h3 {
+        font-size: 1em;
+        margin-bottom: 8px;
+      }
+
+      /* API Routes */
+      .api-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+      }
+
+      .api-box {
+        background: #374151;
+        padding: 18px;
+        border-radius: 8px;
+        border-left: 4px solid #8b5cf6;
+        transition: all 0.2s;
+      }
+
+      .api-box:hover {
+        background: #4b5563;
+        border-left-color: #a78bfa;
+      }
+
+      .api-box code {
+        color: #10b981;
+        font-size: 0.9em;
+      }
+
+      /* AWS Services */
+      .aws-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+      }
+
+      .aws-box {
+        background: #1e293b;
+        border: 2px solid #f59e0b;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+      }
+
+      .aws-box h3 {
+        color: #fbbf24;
+        margin-bottom: 10px;
+      }
+
+      .aws-item {
+        background: #374151;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 8px;
+        font-size: 0.9em;
+      }
+
+      /* Data Flow */
+      .flow-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .flow-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        align-items: center;
+      }
+
+      .flow-box {
+        background: #374151;
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        position: relative;
+        transition: all 0.2s;
+      }
+
+      .flow-box:hover {
+        background: #4b5563;
+        transform: scale(1.05);
+      }
+
+      .flow-box.highlight {
+        background: linear-gradient(135deg, #10b981, #059669);
+        font-weight: bold;
+      }
+
+      .arrow {
+        text-align: center;
+        color: #8b5cf6;
+        font-size: 1.5em;
+      }
+
+      /* Feature Flow */
+      .feature-flow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .feature-node {
+        background: #10b981;
+        padding: 15px 25px;
+        border-radius: 50px;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        transition: all 0.2s;
+      }
+
+      .feature-node:hover {
+        transform: scale(1.1);
+      }
+
+      .feature-node.user {
+        background: #3b82f6;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+      }
+
+      .feature-node.generate {
+        background: #ef4444;
+        box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+      }
+
+      .feature-node.gallery {
+        background: #8b5cf6;
+        box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+      }
+
+      /* Cost Breakdown */
+      .cost-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        overflow-x: auto;
+        display: block;
+      }
+
+      .cost-table table {
+        width: 100%;
+        min-width: 600px;
+      }
+
+      .cost-table th,
+      .cost-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #374151;
+      }
+
+      .cost-table th {
+        background: #374151;
+        color: #fff;
+        font-weight: bold;
+      }
+
+      .cost-table tr:hover {
+        background: #2d3748;
+      }
+
+      .cost-free {
+        color: #10b981;
+        font-weight: bold;
+      }
+
+      .cost-total {
+        background: #1e293b;
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+
+      /* Tech Stack */
+      .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+      }
+
+      .tech-badge {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        padding: 15px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        transition: all 0.2s;
+      }
+
+      .tech-badge:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      }
+
+      /* Key Features */
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+
+      .feature-card {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        transition: transform 0.2s;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .feature-card h3 {
+        font-size: 1.3em;
+        margin-bottom: 10px;
+      }
+
+      /* Highlight Box */
+      .highlight {
+        background: linear-gradient(135deg, #10b981, #059669);
+        padding: 30px;
+        border-radius: 12px;
+        margin-top: 20px;
+      }
+
+      .highlight h3 {
+        font-size: 1.5em;
+        margin-bottom: 20px;
+      }
+
+      .highlight ul {
+        list-style: none;
+      }
+
+      .highlight li {
+        padding: 10px 0;
+        font-size: 1.1em;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .section {
+          padding: 15px;
+        }
+
+        .flow-row {
+          grid-template-columns: 1fr;
+        }
+
+        .arrow {
+          transform: rotate(90deg);
+        }
+
+        .feature-flow {
+          flex-direction: column;
+        }
+
+        .tech-grid {
+          grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        }
+
+        .cost-table {
+          font-size: 0.85em;
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+          color: black;
+        }
+
+        .section {
+          page-break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>ZiaGen Architecture Diagram</h1>
+        <p>Built for scale, security, and minimal cost!</p>
+      </div>
+
+      <!-- Client Layer -->
+      <div class="section">
+        <div class="section-title">Client Layer</div>
+        <div class="client-grid">
+          <div class="client-box">Web Browser</div>
+          <div class="client-box">Mobile Device</div>
+          <div class="client-box">Desktop</div>
+        </div>
+      </div>
+
+      <!-- Frontend Architecture -->
+      <div class="section">
+        <div class="section-title">Frontend - Next.js 16</div>
+        <div class="frontend-grid">
+          <div class="frontend-box">
+            <h3>Next.js App</h3>
+            <p>Main Application</p>
+          </div>
+          <div class="frontend-box">
+            <h3>MainGeneratorPanel</h3>
+            <p>Image Generation UI</p>
+          </div>
+          <div class="frontend-box">
+            <h3>GallerySidebar</h3>
+            <p>Image Gallery</p>
+          </div>
+          <div class="frontend-box">
+            <h3>AuthPlaceholder</h3>
+            <p>Authentication UI</p>
+          </div>
+          <div class="frontend-box">
+            <h3>React Context - Auth</h3>
+            <p>State Management</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- API Routes -->
+      <div class="section">
+        <div class="section-title">API Routes (Next.js Serverless)</div>
+        <div class="api-grid">
+          <div class="api-box">
+            <strong>POST</strong><br />
+            <code>/api/generate-hf</code>
+            <p style="margin-top: 8px; font-size: 0.85em; color: #94a3b8">
+              Generate AI images (Vercel Function)
+            </p>
+          </div>
+          <div class="api-box">
+            <strong>GET</strong><br />
+            <code>/api/list-images</code>
+            <p style="margin-top: 8px; font-size: 0.85em; color: #94a3b8">
+              List all images (Vercel Function)
+            </p>
+          </div>
+          <div class="api-box">
+            <strong>DELETE</strong><br />
+            <code>/api/delete-image</code>
+            <p style="margin-top: 8px; font-size: 0.85em; color: #94a3b8">
+              Delete images (Vercel Function)
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- AWS Services & External APIs -->
+      <div class="section">
+        <div class="section-title">Cloud Services</div>
+        <div class="aws-grid">
+          <div class="aws-box">
+            <h3>AWS Cognito</h3>
+            <div class="aws-item">✓ User Authentication</div>
+            <div class="aws-item">✓ JWT Tokens</div>
+            <div class="aws-item">✓ Email Verification</div>
+          </div>
+          <div class="aws-box">
+            <h3>Amazon S3</h3>
+            <div class="aws-item">✓ Image Storage</div>
+            <div class="aws-item">✓ Metadata Storage</div>
+            <div class="aws-item">✓ Private Bucket</div>
+          </div>
+          <div class="aws-box" style="border-color: #10b981">
+            <h3 style="color: #10b981">Pollinations.ai</h3>
+            <div class="aws-item" style="background: #065f46; color: #10b981">
+              100% FREE
+            </div>
+            <div class="aws-item">✓ Unlimited Generation</div>
+            <div class="aws-item">✓ 12+ Art Styles</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Flow -->
+      <div class="section">
+        <div class="section-title">Data Flow with HTTP Methods</div>
+        <div class="flow-container">
+          <!-- Authentication Flow -->
+          <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.2em">
+            Authentication Flow
+          </h3>
+          <div class="flow-row">
+            <div class="flow-box highlight">
+              User<br /><small>Sign In</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box">Next.js UI<br /><small>Auth Form</small></div>
+            <div class="arrow">→</div>
+            <div class="flow-box">AWS Cognito<br /><small>Validate</small></div>
+            <div class="arrow">→</div>
+            <div class="flow-box highlight">
+              JWT Token<br /><small>Issued</small>
+            </div>
+          </div>
+
+          <div
+            style="
+              height: 30px;
+              border-left: 3px dashed #94a3b8;
+              margin-left: 50%;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            "
+          ></div>
+
+          <!-- Image Generation Flow -->
+          <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.2em">
+            Image Generation Flow
+          </h3>
+          <div class="flow-row">
+            <div class="flow-box highlight">
+              User<br /><small>Enter Prompt</small>
+            </div>
+            <div class="arrow" style="font-size: 1em">POST →</div>
+            <div class="flow-box">
+              /api/generate-hf<br /><small>Vercel Function</small>
+            </div>
+            <div class="arrow" style="font-size: 1em">GET →</div>
+            <div class="flow-box">
+              Pollinations.ai<br /><small>AI Generate</small>
+            </div>
+          </div>
+          <div
+            style="
+              text-align: center;
+              color: #94a3b8;
+              padding: 10px;
+              font-weight: bold;
+            "
+          >
+            ↓ Image Generated (PNG Blob)
+          </div>
+          <div class="flow-row">
+            <div class="flow-box">
+              S3 PutObject<br /><small>Upload + Metadata</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box">
+              Amazon S3<br /><small>Store Image</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box">
+              Return URL<br /><small>S3 Image URL</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box highlight">
+              Display<br /><small>Show to User</small>
+            </div>
+          </div>
+
+          <div
+            style="
+              height: 30px;
+              border-left: 3px dashed #94a3b8;
+              margin-left: 50%;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            "
+          ></div>
+
+          <!-- Gallery Operations -->
+          <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.2em">
+            Gallery Operations
+          </h3>
+          <div class="flow-row">
+            <div class="flow-box highlight">
+              User<br /><small>View Gallery</small>
+            </div>
+            <div class="arrow" style="font-size: 1em">GET →</div>
+            <div class="flow-box">
+              /api/list-images<br /><small>Vercel Function</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box">
+              S3 ListObjects<br /><small>Fetch All</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box highlight">
+              Display<br /><small>Show Gallery</small>
+            </div>
+          </div>
+
+          <div
+            style="
+              height: 30px;
+              border-left: 3px dashed #94a3b8;
+              margin-left: 50%;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            "
+          ></div>
+
+          <!-- Delete Flow -->
+          <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.2em">
+            Delete Image Flow
+          </h3>
+          <div class="flow-row">
+            <div class="flow-box highlight">
+              User<br /><small>Click Delete</small>
+            </div>
+            <div class="arrow" style="font-size: 1em">DELETE →</div>
+            <div class="flow-box">
+              /api/delete-image<br /><small>Vercel Function</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box">
+              S3 DeleteObject<br /><small>Remove Image</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box highlight">
+              Update<br /><small>Refresh Gallery</small>
+            </div>
+          </div>
+
+          <div
+            style="
+              height: 30px;
+              border-left: 3px dashed #94a3b8;
+              margin-left: 50%;
+              margin-top: 10px;
+              margin-bottom: 10px;
+            "
+          ></div>
+
+          <!-- Download Flow -->
+          <h3 style="color: #8b5cf6; margin-bottom: 15px; font-size: 1.2em">
+            Download Image Flow
+          </h3>
+          <div class="flow-row">
+            <div class="flow-box highlight">
+              User<br /><small>Click Download</small>
+            </div>
+            <div class="arrow" style="font-size: 1em">GET →</div>
+            <div class="flow-box">
+              S3 Image URL<br /><small>Fetch Image</small>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-box">
+              Browser Download<br /><small>Save to Disk</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Flow Map -->
+      <div class="section">
+        <div class="section-title">Feature Flow Map</div>
+        <div class="feature-flow">
+          <div class="feature-node user">User</div>
+          <div class="arrow">→</div>
+          <div class="feature-node">Start</div>
+          <div class="arrow">→</div>
+          <div class="feature-node user">Auth</div>
+          <div class="arrow">→</div>
+          <div class="feature-node generate">Generate</div>
+          <div class="arrow">→</div>
+          <div class="feature-node gallery">Gallery</div>
+          <div class="arrow">→</div>
+          <div class="feature-node">Download</div>
+        </div>
+      </div>
+
+      <!-- Technology Stack -->
+      <div class="section">
+        <div class="section-title">Technology Stack</div>
+        <div class="tech-grid">
+          <div class="tech-badge">Next.js 16</div>
+          <div class="tech-badge">TypeScript</div>
+          <div class="tech-badge">Tailwind CSS</div>
+          <div class="tech-badge">AWS Cognito</div>
+          <div class="tech-badge">Amazon S3</div>
+          <div class="tech-badge">Pollinations.ai</div>
+          <div class="tech-badge">Vercel Serverless</div>
+          <div class="tech-badge">AWS CDK</div>
+        </div>
+      </div>
+
+      <!-- AWS Services Used -->
+      <div class="section">
+        <div class="section-title">AWS Services Used</div>
+        <div class="aws-grid">
+          <div class="aws-box" style="border-color: #10b981">
+            <h3 style="color: #10b981">✅ AWS Cognito</h3>
+            <div class="aws-item" style="background: #065f46; color: #10b981">
+              DEPLOYED
+            </div>
+            <div class="aws-item">Purpose: User Authentication</div>
+            <div class="aws-item">Managed by: AWS CDK (ZiaGenCognitoStack)</div>
+            <div class="aws-item">
+              Features: Sign up, Sign in, Email verification, JWT tokens
+            </div>
+          </div>
+          <div class="aws-box" style="border-color: #10b981">
+            <h3 style="color: #10b981">✅ Amazon S3</h3>
+            <div class="aws-item" style="background: #065f46; color: #10b981">
+              DEPLOYED
+            </div>
+            <div class="aws-item">Purpose: Image Storage</div>
+            <div class="aws-item">Managed by: AWS CDK (ZiaGenDataStack)</div>
+            <div class="aws-item">
+              Features: Store generated images, Metadata storage, Private bucket
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Features -->
+      <div class="section">
+        <div class="section-title">Key Features</div>
+        <div class="features-grid">
+          <div class="feature-card">
+            <h3>12+ Art Styles</h3>
+            <p>
+              Studio Ghibli, Realistic, Pixel Art, Cyberpunk, Oil Painting,
+              Watercolor, and more!
+            </p>
+          </div>
+          <div class="feature-card">
+            <h3>8 Dimension Options</h3>
+            <p>Square, Portrait, Landscape formats from 512px to 1024px</p>
+          </div>
+          <div class="feature-card">
+            <h3>Image Gallery</h3>
+            <p>View, regenerate, download, and delete your creations</p>
+          </div>
+          <div class="feature-card">
+            <h3>Secure Auth</h3>
+            <p>AWS Cognito with email verification</p>
+          </div>
+          <div class="feature-card">
+            <h3>Cloud Storage</h3>
+            <p>Persistent S3 storage with metadata</p>
+          </div>
+          <div class="feature-card">
+            <h3>100% Free AI</h3>
+            <p>Unlimited generations with Pollinations.ai</p>
+          </div>
+          <div class="feature-card">
+            <h3>Download Images</h3>
+            <p>Download any generated image with one click</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cost Breakdown -->
+      <div class="section">
+        <div class="section-title">Cost Breakdown</div>
+        <div class="cost-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Service</th>
+                <th>Usage</th>
+                <th>Monthly Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pollinations.ai</strong></td>
+                <td>Unlimited image generation</td>
+                <td class="cost-free">$0.00 (FREE!)</td>
+              </tr>
+              <tr>
+                <td><strong>Vercel Hosting</strong></td>
+                <td>100GB bandwidth/month</td>
+                <td class="cost-free">$0.00 (FREE!)</td>
+              </tr>
+              <tr>
+                <td><strong>AWS Cognito</strong></td>
+                <td>Up to 50,000 MAU</td>
+                <td class="cost-free">$0.00 (FREE!)</td>
+              </tr>
+              <tr>
+                <td><strong>AWS S3 Storage</strong></td>
+                <td>~1GB storage + requests</td>
+                <td>~$0.01 - $1.00</td>
+              </tr>
+              <tr class="cost-total">
+                <td colspan="2" style="text-align: right; padding-right: 20px">
+                  <strong>TOTAL MONTHLY COST:</strong>
+                </td>
+                <td class="cost-free" style="font-size: 1.3em">
+                  ~$0.01 - $2.00
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Deployment Comparison -->
+      <div class="section">
+        <div class="section-title">🔄 AWS Lambda vs Vercel Comparison</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px">
+          <!-- AWS Lambda Option -->
+          <div
+            style="
+              background: #1e293b;
+              border: 2px solid #f59e0b;
+              border-radius: 12px;
+              padding: 25px;
+            "
+          >
+            <h3 style="color: #fbbf24; margin-bottom: 15px; text-align: center">
+              Option A: AWS Lambda
+            </h3>
+            <div
+              style="
+                background: #252a3d;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+              "
+            >
+              <p style="color: #10b981; font-weight: bold; margin-bottom: 10px">
+                Would Deploy:
+              </p>
+              <ul style="list-style: none; line-height: 2">
+                <li>→ API Gateway (HTTP layer)</li>
+                <li>→ Lambda Functions (compute)</li>
+                <li>→ Both via ZiaGenApiStack</li>
+              </ul>
+            </div>
+            <div
+              style="
+                background: #252a3d;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+              "
+            >
+              <p style="font-weight: bold; margin-bottom: 10px">
+                Request Flow:
+              </p>
+              <div style="font-size: 0.9em; line-height: 1.8">
+                Client<br />
+                ↓ POST<br />
+                <strong>API Gateway</strong><br />
+                ↓ Trigger<br />
+                <strong>Lambda Function</strong><br />
+                ↓ Process<br />
+                Response
+              </div>
+            </div>
+            <div
+              style="
+                background: #374151;
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 0.85em;
+              "
+            >
+              <strong>CDK Deploy:</strong><br />
+              <code style="color: #10b981">cdk deploy ZiaGenApiStack</code>
+            </div>
+          </div>
+
+          <!-- Vercel Option (Current) -->
+          <div
+            style="
+              background: #1e293b;
+              border: 2px solid #10b981;
+              border-radius: 12px;
+              padding: 25px;
+              box-shadow: 0 0 30px rgba(16, 185, 129, 0.3);
+            "
+          >
+            <h3 style="color: #10b981; margin-bottom: 15px; text-align: center">
+              ✅ Option B: Vercel (Current)
+            </h3>
+            <div
+              style="
+                background: #252a3d;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+              "
+            >
+              <p style="color: #10b981; font-weight: bold; margin-bottom: 10px">
+                ✅ Already Included:
+              </p>
+              <ul style="list-style: none; line-height: 2">
+                <li>→ HTTP endpoint (built-in)</li>
+                <li>→ Serverless functions (built-in)</li>
+                <li>→ Auto-deploy from Git</li>
+              </ul>
+            </div>
+            <div
+              style="
+                background: #252a3d;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+              "
+            >
+              <p style="font-weight: bold; margin-bottom: 10px">
+                Request Flow:
+              </p>
+              <div style="font-size: 0.9em; line-height: 1.8">
+                Client<br />
+                ↓ POST<br />
+                <strong>Vercel Edge Network</strong><br />
+                ↓ Route + Execute<br />
+                <strong>Next.js API Route</strong><br />
+                ↓ Process<br />
+                Response
+              </div>
+            </div>
+            <div
+              style="
+                background: #065f46;
+                padding: 12px;
+                border-radius: 8px;
+                font-size: 0.85em;
+              "
+            >
+              <strong>Git Deploy:</strong><br />
+              <code style="color: #10b981">git push origin main</code><br />
+              <small style="color: #94a3b8">(Vercel auto-deploys)</small>
+            </div>
+          </div>
+        </div>
+
+        <!-- Key Differences Table -->
+        <!-- <div style="margin-top: 30px; overflow-x: auto">
+          <table style="width: 100%; border-collapse: collapse">
+            <thead>
+              <tr style="background: #374151">
+                <th
+                  style="
+                    padding: 12px;
+                    text-align: left;
+                    border-bottom: 2px solid #94a3b8;
+                  "
+                >
+                  Feature
+                </th>
+                <th
+                  style="
+                    padding: 12px;
+                    text-align: center;
+                    border-bottom: 2px solid #94a3b8;
+                  "
+                >
+                  AWS Lambda + Gateway
+                </th>
+                <th
+                  style="
+                    padding: 12px;
+                    text-align: center;
+                    border-bottom: 2px solid #94a3b8;
+                    background: #065f46;
+                  "
+                >
+                  Vercel (Current)
+                </th>
+              </tr>
+            </thead>
+            <tbody style="font-size: 0.9em">
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #374151">
+                  Cold Starts
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                    color: #f59e0b;
+                  "
+                >
+                  Yes (1-3s delay)
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                    color: #10b981;
+                  "
+                >
+                  <strong>No cold starts</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #374151">
+                  Setup Complexity
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                  "
+                >
+                  CDK + Config
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                    color: #10b981;
+                  "
+                >
+                  <strong>Zero config</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #374151">
+                  Deploy Method
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                  "
+                >
+                  CDK deploy
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                    color: #10b981;
+                  "
+                >
+                  <strong>Git push</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #374151">
+                  Cost (low traffic)
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                  "
+                >
+                  $0-5/month
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                    color: #10b981;
+                  "
+                >
+                  <strong>$0 (free tier)</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border-bottom: 1px solid #374151">
+                  Next.js Optimization
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                  "
+                >
+                  Manual
+                </td>
+                <td
+                  style="
+                    padding: 10px;
+                    text-align: center;
+                    border-bottom: 1px solid #374151;
+                    color: #10b981;
+                  "
+                >
+                  <strong>Built-in</strong>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding: 10px">Code Location</td>
+                <td style="padding: 10px; text-align: center">
+                  <code>lambda/</code> folder
+                </td>
+                <td style="padding: 10px; text-align: center; color: #10b981">
+                  <strong><code>app/api/</code> folder</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> -->
+      </div>
+
+      <!-- Why This Architecture -->
+      <div class="section">
+        <div class="highlight">
+          <h3>Why This Architecture?</h3>
+          <ul>
+            <li>
+              <strong>Scalable:</strong> Serverless architecture handles
+              thousands of concurrent users
+            </li>
+            <li>
+              <strong>Cost-Effective:</strong> Nearly free to run (~$1-2/month)
+            </li>
+            <li>
+              <strong>Secure:</strong> Enterprise-grade AWS Cognito
+              authentication
+            </li>
+            <li>
+              <strong>Fast:</strong> Global CDN via Vercel, optimized Next.js
+              loading
+            </li>
+            <li>
+              <strong>Reliable:</strong> 99.99% uptime with AWS infrastructure
+            </li>
+            <li>
+              <strong>Modern:</strong> Latest Next.js 16, TypeScript, Tailwind
+              CSS
+            </li>
+            <li>
+              <strong>Developer-Friendly:</strong> Easy to maintain, deploy, and
+              scale
+            </li>
+            <li>
+              <strong>No Cold Starts:</strong> Vercel edge functions are always
+              warm
+            </li>
+          </ul>
+        </div>
+
+        <!-- Infrastructure Management -->
+        <div
+          style="
+            margin-top: 30px;
+            padding: 25px;
+            background: #1e293b;
+            border-radius: 12px;
+            border: 2px solid #f59e0b;
+          "
+        >
+          <h3 style="color: #fbbf24; margin-bottom: 15px">
+            Infrastructure Management (AWS CDK)
+          </h3>
+          <p style="color: #94a3b8; margin-bottom: 20px; line-height: 1.6">
+            <strong>AWS CDK is NOT optional</strong> - it's actively used to
+            manage AWS infrastructure as code.
+          </p>
+          <div
+            style="
+              background: #252a3d;
+              padding: 15px;
+              border-radius: 8px;
+              margin-bottom: 10px;
+            "
+          >
+            <strong style="color: #10b981"
+              >✅ Deployed Stacks (via CDK):</strong
+            >
+            <ul style="list-style: none; margin-top: 10px; line-height: 2">
+              <li>
+                <strong>ZiaGenDataStack</strong> - Creates and manages S3 bucket
+                for image storage
+              </li>
+              <li>
+                <strong>ZiaGenCognitoStack</strong> - Creates and manages
+                Cognito User Pool for authentication
+              </li>
+            </ul>
+            <p style="color: #94a3b8; margin-top: 10px; font-size: 0.9em">
+              Deploy command:
+              <code
+                style="
+                  background: #374151;
+                  padding: 2px 6px;
+                  border-radius: 4px;
+                "
+                >cdk deploy ZiaGenDataStack ZiaGenCognitoStack</code
+              >
+            </p>
+          </div>
+          <div style="background: #252a3d; padding: 15px; border-radius: 8px">
+            <strong style="color: #94a3b8">❌ Not Deployed:</strong>
+            <ul style="list-style: none; margin-top: 10px; line-height: 2">
+              <li>
+                <strong>ZiaGenApiStack</strong> - Would create:
+                <ul
+                  style="list-style: none; margin-left: 20px; margin-top: 5px"
+                >
+                  <li>→ API Gateway (HTTP endpoint receiver)</li>
+                  <li>→ Lambda Functions (API logic executor)</li>
+                  <li>→ Integration between them</li>
+                </ul>
+              </li>
+            </ul>
+            <div
+              style="
+                margin-top: 15px;
+                padding: 15px;
+                background: #1e293b;
+                border-radius: 6px;
+                border-left: 3px solid #f59e0b;
+              "
+            >
+              <p style="color: #fbbf24; font-weight: bold; margin-bottom: 8px">
+                💡 Key Point: API Gateway + Lambda are ALWAYS deployed together
+              </p>
+              <p style="color: #94a3b8; font-size: 0.9em; line-height: 1.6">
+                In AWS, you can't use Lambda without an HTTP trigger. API
+                Gateway provides that trigger. If you deploy
+                <code>ZiaGenApiStack</code>, you get both services.
+              </p>
+            </div>
+            <p
+              style="
+                color: #94a3b8;
+                margin-top: 15px;
+                font-size: 0.9em;
+                line-height: 1.6;
+              "
+            >
+              <strong>Why not deployed?</strong> Using
+              <strong>Vercel</strong> instead:
+            </p>
+            <ul
+              style="
+                list-style: none;
+                margin-left: 20px;
+                margin-top: 8px;
+                line-height: 1.8;
+              "
+            >
+              <li>✓ Vercel acts as API Gateway (receives HTTP requests)</li>
+              <li>✓ Vercel acts as Lambda (runs serverless functions)</li>
+              <li>✓ No cold starts, auto-deploy, free tier</li>
+              <li>✓ Code stays in <code>app/api/</code> folder</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

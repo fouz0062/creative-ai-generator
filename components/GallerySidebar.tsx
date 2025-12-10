@@ -95,6 +95,30 @@ export default function GallerySidebar({
       alert(`Failed to delete image: ${errorMessage}`);
     }
   };
+
+  const downloadImage = async (image: ImageMetadata, e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent triggering onSelectImage
+
+    try {
+      const response = await fetch(image.imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `ziagen-${image.prompt
+        .substring(0, 30)
+        .replace(/[^a-z0-9]/gi, "-")}-${Date.now()}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (err: unknown) {
+      console.error("❌ Error downloading image:", err);
+      const errorMessage = err instanceof Error ? err.message : "Unknown error";
+      alert(`Failed to download image: ${errorMessage}`);
+    }
+  };
+
   // Expose refresh function to parent
   useEffect(() => {
     if (onRefresh) {
@@ -160,6 +184,28 @@ export default function GallerySidebar({
                 alt={image.prompt}
                 className="object-cover w-full h-full aspect-square"
               />
+
+              {/* Download Button */}
+              <button
+                onClick={(e) => downloadImage(image, e)}
+                className="absolute top-2 left-2 bg-green-600 hover:bg-green-700 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10 cursor-pointer"
+                title="Download image"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </svg>
+              </button>
 
               {/* Delete Button */}
               <button
