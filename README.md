@@ -12,7 +12,6 @@ ZiaGen is a modern, fully-featured AI image generation platform that brings your
 
 - **Multiple Artistic Styles**: Choose from 12+ styles including Studio Ghibli, Cartoon, Pixel Art, Realistic, Oil Painting, Watercolor, Cyberpunk, Fantasy, and more!
 - **Custom Dimensions**: Generate images in various sizes - Square (512px to 1024px), Portrait, Landscape, or Wide formats
-- **Smart Regeneration**: Refine and regenerate images while keeping the same file - no duplicates!
 - **Instant Results**: Fast image generation with visual loading states
 
 ### 🎯 **Intuitive User Experience**
